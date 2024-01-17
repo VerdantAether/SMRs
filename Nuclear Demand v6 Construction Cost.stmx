@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>Nuclear Demand v6 Construction Cost</name>
+		<uuid>eed773d1-f4f7-4725-8d05-452b96d4f2dc</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="3.2.1" isee:build_number="2906" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="5" isee:run_prefix="Run" isee:simulation_delay="0.0555556" isee:restore_on_start="false" method="Euler" time_units="Years" isee:instantaneous_flows="false" isee:ignore_module_errors="false" isee:loop_scores="true" isee:loop_exhaustive_allowed="1000">
+		<start>1960</start>
+		<stop>2050</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<isee:prefs saved_runs="5" keep="false" show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" isee:design="Deluxe Prev-Next Blue Green Pastel" isee:design_custom="false" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" rerun_on_structure_change="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" max_advance_time_in_ms="0" model_stops_when_players_drop="false" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units>
+		<unit name="People">
+			<eqn/>
+			<alias>person</alias>
+			<alias>persons</alias>
+		</unit>
+		<unit name="$">
+			<eqn/>
+			<alias>dollar</alias>
+			<alias>dollars</alias>
+		</unit>
+		<unit name="Hours">
+			<eqn/>
+			<alias>hr</alias>
+			<alias>hour</alias>
+		</unit>
+		<unit name="Years">
+			<eqn/>
+			<alias>yr</alias>
+			<alias>year</alias>
+		</unit>
+		<unit name="Dimensionless">
+			<eqn>1</eqn>
+			<alias>dmnl</alias>
+			<alias>unitless</alias>
+		</unit>
+		<unit name="kilowatt hours per day">
+			<eqn>kWh/day</eqn>
+		</unit>
+		<unit name="kilowatts">
+			<eqn>kW</eqn>
+			<alias>kilowatt</alias>
+		</unit>
+	</model_units>
+	<model>
+		<variables>
+			<aux name="VA Population Projection">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="2020" max="2050"/>
+					<yscale min="0" max="100"/>
+					<ypts>8636471,8900000,9129002,9444186,9759371,10147590,10535810</ypts>
+				</gf>
+				<units>People</units>
+			</aux>
+			<aux name="Historical Electricity\nsales per capita kWh">
+				<doc>Data from 1960-2021 historical. 
+https://www.eia.gov/state/seds/sep_sum/html/pdf/rank_es_capita.pdf 
+
+</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="1960" max="2021"/>
+					<yscale min="0" max="100"/>
+					<ypts>2900,3078,3308,3541,3816,4213,4623,4963,5593,6165,6400,6622,7035,7672,7558,7791,8335,8572,8710,8810,9010,9322,9316,9622,9850,10093,10886,11268,11614,12003,11693,11920,11918,12500,12469,12767,12975,12801,13130,13290,13611,13399,13808,13779,14102,14366,13907,14394,14056,13684,14184,13608,13170,13391,13488,13395,13351,13178,13900,13841,13577,14467</ypts>
+				</gf>
+				<units>kWh/People</units>
+			</aux>
+			<aux name="kWh to mWh\nconversion factor">
+				<eqn>1000</eqn>
+				<units>kWh/mWh</units>
+			</aux>
+			<aux name="Historic VA Energy\nUse per capita mWh">
+				<eqn>Historical_Electricity_sales_per_capita_kWh/kWh_to_mWh_conversion_factor</eqn>
+				<units>mWh/People</units>
+			</aux>
+			<aux name="Projected Electrical Demand Dominion">
+				<eqn>VA_Population_Projection*Year_Adjusted_Demand_Dominion</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Projected Nuclear Demand Dominion">
+				<eqn>Percent_Generated_from_Nuclear*Projected_Electrical_Demand_Dominion</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Percent Generated from Nuclear">
+				<eqn>0.29</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Historical Nuclear Generation\nmillion kWh">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="1960" max="2021"/>
+					<yscale min="0" max="100000"/>
+					<ypts>0,0,0,0,0,0,0,0,0,0,0,0,448,6857,5953,8970,7740,9481,14098,7056,11466,17818,17420,18674,17045,22303,21215,18145,21037,14264,23820,23886,23334,22689,25429,25135,26286,27084,27234,28301,28321,25759,27346,24816,28315,27918,27594,27268,27931,28212,26572,25548,28723,29326,30221,28060,29732,30554,29252,29498,30140,28572</ypts>
+				</gf>
+				<units>million kWh</units>
+			</aux>
+			<aux name="Nuclear generation\nconversion factor">
+				<eqn>1000</eqn>
+				<units>mWh/million kWh</units>
+			</aux>
+			<aux name="Historic Nuclear Generation">
+				<eqn>Historical_Nuclear_Generation_million_kWh*Nuclear_generation_conversion_factor</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Historic Shortfall/Surplus">
+				<eqn>Historic_Nuclear_Generation-Historic_Nuclear_Demand</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Historic Electrical Demand">
+				<eqn>Historic_VA_Population*Historic_VA_Energy_Use_per_capita_mWh
+
+{IF(TIME&gt;2021)THEN(NAN)ELSE(VA_Population_Projection*Historic_VA_Energy_Use_per_capita_mWh)}</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Historic VA Population">
+				<eqn>TIME</eqn>
+				<gf>
+					<xscale min="1960" max="2022"/>
+					<yscale min="0" max="100"/>
+					<ypts>3986000,4095000,4180000,4276000,4357000,4411000,4456000,4508000,4558000,4614000,4651448,4750838,4824472,4901292,4971069,5047395,5121863,5193112,5270240,5307945,5368334,5444097,5492783,5564657,5643870,5715153,5811700,5932268,6036909,6120246,6213526,6283853,6383315,6464795,6536771,6601392,6665491,6732878,6789225,6872912,7105817,7198362,7286873,7366977,7475575,7577105,7673725,7751000,7833496,7925937,8024004,8102437,8187456,8255861,8315430,8367303,8417651,8471011,8510920,8556642,8636471,8657365,NaN</ypts>
+				</gf>
+				<units>People</units>
+			</aux>
+			<aux name="Historic Nuclear Demand" isee:derived_units="true">
+				<eqn>Historic_Electrical_Demand*Percent_Generated_from_Nuclear</eqn>
+				<units>mWh</units>
+			</aux>
+			<flow name="New Demand Dominion">
+				<eqn>Year_Adjusted_Demand_Dominion*Annual_Demand_Growth_Dominion - (Year_Adjusted_Demand_Dominion*Annual_Demand_Growth_Dominion*Energy_efficiency_increase_per_year*(TIME-2021))</eqn>
+				<non_negative/>
+				<units>mWh/person/Years</units>
+			</flow>
+			<stock name="Year Adjusted Demand Dominion">
+				<eqn>1+STEP(14.467, 2021)</eqn>
+				<inflow>New_Demand_Dominion</inflow>
+				<non_negative/>
+				<units>mWh/person</units>
+			</stock>
+			<aux name="Annual Demand Growth Dominion">
+				<doc>Dominion&apos;s 2023 IRP</doc>
+				<eqn>0+STEP(0.025, 2021)</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<stock name="Projected Electrical\nDemand E-Plan">
+				<eqn>1+STEP(125246099, 2021)</eqn>
+				<inflow>&quot;E-Plan_Projected_Additional_Demand&quot;</inflow>
+				<non_negative/>
+				<units>mWh</units>
+			</stock>
+			<flow name="E-Plan Projected Additional Demand">
+				<doc>2022 Energy Plan estimates 5000gWh additional per year. </doc>
+				<eqn>5000000-(5000000*Energy_efficiency_increase_per_year*(TIME-2021))</eqn>
+				<non_negative/>
+				<units>mWh/Years</units>
+			</flow>
+			<aux name="Projected Nuclear Demand E-Plan" isee:derived_units="true">
+				<eqn>&quot;Projected_Electrical_Demand_E-Plan&quot;*Percent_Generated_from_Nuclear</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Dominion Demand" isee:derived_units="true">
+				<eqn>Historic_Nuclear_Generation-Projected_Nuclear_Demand_Dominion</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="E-Plan Demand" isee:derived_units="true">
+				<eqn>Historic_Nuclear_Generation-&quot;Projected_Nuclear_Demand_E-Plan&quot;</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="MW per reactor">
+				<doc>From Dominion&apos;s 2022 IRP</doc>
+				<eqn>285</eqn>
+				<units>mW/Reactors</units>
+			</aux>
+			<aux name="Reactor per year">
+				<eqn>0+STEP(1, 2034)</eqn>
+				<units>Reactors/Years</units>
+			</aux>
+			<flow name="New Reactors built">
+				<eqn>Reactor_per_year</eqn>
+				<non_negative/>
+				<units>Reactors/Years</units>
+			</flow>
+			<stock name="Total SMRs in Opperation">
+				<eqn>0</eqn>
+				<inflow>New_Reactors_built</inflow>
+				<non_negative/>
+				<units>Reactors</units>
+			</stock>
+			<aux name="Demand Filled by SMRS">
+				<eqn>Total_SMRs_in_Opperation*MWH_per_reactor_per_year</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Hours per year">
+				<eqn>8760</eqn>
+				<units>hour/years</units>
+			</aux>
+			<aux name="MWH per reactor per year">
+				<eqn>Hours_per_year*MW_per_reactor</eqn>
+				<units>mWh/Reactors</units>
+			</aux>
+			<aux name="Dominion Shortfall" isee:derived_units="true">
+				<eqn>Dominion_Demand+Demand_Filled_by_SMRS</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="E-Plan Shortfall">
+				<eqn>&quot;E-Plan_Demand&quot;+Demand_Filled_by_SMRS</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Nuclear Generation with SMRs">
+				<eqn>Historic_Nuclear_Generation+Demand_Filled_by_SMRS</eqn>
+				<units>mWh</units>
+			</aux>
+			<aux name="Energy efficiency\nincrease per year">
+				<doc>https://www.iea.org/reports/energy-efficiency-2021/executive-summary</doc>
+				<eqn>0.013</eqn>
+				<range min="0" max="0.04"/>
+				<units>Dimensionless</units>
+			</aux>
+			<stock name="Reactor Construction Cost">
+				<doc>Reactor cost as per UAMPS
+
+https://ieefa.org/sites/default/files/2023-01/UAMPS%20Talking%20Points%20_%20Class%203%20_%2020230102%20_%20Final.pdf </doc>
+				<eqn>9300000000</eqn>
+				<inflow>Economies_of_Scale</inflow>
+				<non_negative/>
+				<units>$</units>
+			</stock>
+			<flow name="Economies of Scale">
+				<eqn>(Cost_reduction_per_additional_reactor*Total_SMRs_in_Opperation)*-Reactor_Construction_Cost</eqn>
+				<units>Dollars Per Year</units>
+			</flow>
+			<aux name="Cost reduction per\nadditional reactor">
+				<eqn>0.01</eqn>
+				<units>Dimensionless</units>
+			</aux>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+				<graph color="black" background="black" font_color="lime" font_size="12pt" axis_color="lime" grid_color="#00AA00" isee:graph_area_color="black" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="lime" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="lime" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_corner_radius="0" popup_background_color="#FFFECF"/>
+				<slider color="#66CC66" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:fancy_appearance="false" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:dual_slider color="#66CC66" background="silver" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch" isee:on_color="green"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt" isee:show_hover_tip="true"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+				<isee:navigation_widget color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" padding="6 8" border_color="#999999" border_width="thin" border_style="solid" item_spacing="6" appearance="tabs" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD" transparent_bg="false"/>
+				<isee:shape color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid" opacity="1" transparent_background="true" corner_radius="1"/>
+				<isee:selector color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
+				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+			</style>
+			<view isee:show_pages="false" background="black" page_width="1056" page_height="816" isee:page_cols="2" isee:page_rows="3" isee:scroll_x="791.667" isee:scroll_y="27.5" zoom="120" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="#00D800" background="black" font_color="lime" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="#00D800" background="black" font_color="lime" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</flow>
+					<isee:placeholder color="#228B22" background="white" font_color="lime" font_size="9pt" label_side="bottom"/>
+					<module color="#00D800" background="black" font_color="lime" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="#00D800" background="black" font_color="lime" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="lime" font_size="9pt"/>
+					<connector color="red" background="white" font_color="red" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+					<graph color="black" background="black" font_color="lime" font_size="12pt" axis_color="lime" grid_color="#00AA00" isee:graph_area_color="black" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="lime" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="lime" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<aux label_side="right" x="844.167" y="192" name="VA Population Projection"/>
+				<aux label_side="center" x="637" y="25.1667" name="Historical Electricity\nsales per capita kWh"/>
+				<aux label_side="center" x="721.167" y="20.1667" name="kWh to mWh\nconversion factor"/>
+				<aux label_side="center" x="721.167" y="72.1667" name="Historic VA Energy\nUse per capita mWh"/>
+				<connector uid="1" angle="299.299">
+					<from>Historical_Electricity_sales_per_capita_kWh</from>
+					<to>Historic_VA_Energy_Use_per_capita_mWh</to>
+				</connector>
+				<connector uid="2" angle="270">
+					<from>kWh_to_mWh_conversion_factor</from>
+					<to>Historic_VA_Energy_Use_per_capita_mWh</to>
+				</connector>
+				<aux x="687.833" y="156" name="Projected Electrical Demand Dominion"/>
+				<connector uid="4" angle="167.032">
+					<from>VA_Population_Projection</from>
+					<to>Projected_Electrical_Demand_Dominion</to>
+				</connector>
+				<stacked_container uid="5" x="1269.33" y="490.333" width="743" height="516">
+					<graph grid_color="#004F00" width="743" height="516" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="7" num_y_grid_lines="7" num_x_labels="7" num_y_labels="7" title="Electrical &amp; Nuclear Demand Projections" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Historic_Electrical_Demand"/>
+						</plot>
+						<plot color="blue" pen_style="dotted" title="Dominion E Projected" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name="Projected_Electrical_Demand_Dominion"/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="aqua" pen_style="dotted" title="E-Plan E Projected" isee:keep_zero_visible="true" pen_width="3" index="2" show_y_axis="true">
+							<entity name='"Projected_Electrical_Demand_E-Plan"'/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="red" isee:keep_zero_visible="true" pen_width="3" index="3" show_y_axis="true">
+							<entity name="Historic_Nuclear_Demand"/>
+						</plot>
+						<plot color="red" pen_style="dashed" title="Dominion N Projected" isee:keep_zero_visible="true" pen_width="3" index="4" show_y_axis="true">
+							<entity name="Projected_Nuclear_Demand_Dominion"/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="#FFAA00" pen_style="dashed" title="E-Plan N-Projected" isee:keep_zero_visible="true" pen_width="3" index="5" show_y_axis="true">
+							<entity name='"Projected_Nuclear_Demand_E-Plan"'/>
+							<isee:data name="Projected"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux label_side="top" x="592.25" y="165" name="Projected Nuclear Demand Dominion"/>
+				<aux label_side="top" x="458.5" y="151.333" name="Percent Generated from Nuclear"/>
+				<connector uid="8" angle="354.166">
+					<from>Percent_Generated_from_Nuclear</from>
+					<to>Projected_Nuclear_Demand_Dominion</to>
+				</connector>
+				<aux label_side="top" x="191" y="58" name="Historical Nuclear Generation\nmillion kWh"/>
+				<aux label_side="top" x="260" y="82" name="Nuclear generation\nconversion factor"/>
+				<aux x="242" y="120" name="Historic Nuclear Generation"/>
+				<connector uid="9" angle="298.301">
+					<from>Historical_Nuclear_Generation_million_kWh</from>
+					<to>Historic_Nuclear_Generation</to>
+				</connector>
+				<connector uid="10" angle="254.476">
+					<from>Nuclear_generation_conversion_factor</from>
+					<to>Historic_Nuclear_Generation</to>
+				</connector>
+				<stacked_container uid="11" x="622.333" y="491.333" width="641.667" height="514">
+					<graph grid_color="#007000" width="641.667" height="514" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="7" num_y_grid_lines="11" num_x_labels="7" num_y_labels="11" title="Historical and Projected Nuclear Generation" isee:fill_intensity="0.1" to="2050" from="1960" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Historic_Nuclear_Demand"/>
+						</plot>
+						<plot color="red" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name="Historic_Nuclear_Generation"/>
+						</plot>
+						<plot color="blue" pen_style="dotted" title="Projected N Demand Dominion" isee:keep_zero_visible="true" pen_width="3" index="2" show_y_axis="true">
+							<entity name="Projected_Nuclear_Demand_Dominion"/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="aqua" pen_style="dotted" title="Projected N Demand E-Plan" isee:keep_zero_visible="true" pen_width="3" index="3" show_y_axis="true">
+							<entity name='"Projected_Nuclear_Demand_E-Plan"'/>
+							<isee:data name="Projected"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="352.167" y="90.1667" name="Historic Shortfall/Surplus"/>
+				<connector uid="13" angle="0.26649">
+					<from>Historic_Nuclear_Generation</from>
+					<to>&quot;Historic_Shortfall/Surplus&quot;</to>
+				</connector>
+				<stacked_container uid="14" x="623.667" y="1015.33" width="1391.33" height="322">
+					<graph grid_color="#0C5F0B" width="1391.33" height="322" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="10" num_y_grid_lines="9" num_x_labels="10" num_y_labels="9" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name='"Historic_Shortfall/Surplus"'/>
+						</plot>
+						<plot color="red" pen_style="dot_dashed" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name="Dominion_Shortfall"/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="fuchsia" pen_style="dotted" isee:keep_zero_visible="true" pen_width="3" index="2" show_y_axis="true">
+							<entity name='"E-Plan_Shortfall"'/>
+							<isee:data name="Projected"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="643" y="87" name="Historic Electrical Demand"/>
+				<connector uid="15" angle="201.987">
+					<from>Historic_VA_Energy_Use_per_capita_mWh</from>
+					<to>Historic_Electrical_Demand</to>
+				</connector>
+				<aux label_side="left" label_angle="135" x="559" y="59" name="Historic VA Population"/>
+				<connector uid="17" angle="323.569">
+					<from>Historic_VA_Population</from>
+					<to>Historic_Electrical_Demand</to>
+				</connector>
+				<aux label_side="top" x="445" y="90.1667" name="Historic Nuclear Demand"/>
+				<connector uid="23" angle="206.565">
+					<from>Historic_Electrical_Demand</from>
+					<to>Historic_Nuclear_Demand</to>
+				</connector>
+				<connector uid="24" angle="103.059">
+					<from>Percent_Generated_from_Nuclear</from>
+					<to>Historic_Nuclear_Demand</to>
+				</connector>
+				<connector uid="25" angle="180">
+					<from>Historic_Nuclear_Demand</from>
+					<to>&quot;Historic_Shortfall/Surplus&quot;</to>
+				</connector>
+				<connector uid="28" angle="161.989">
+					<from>Projected_Electrical_Demand_Dominion</from>
+					<to>Projected_Nuclear_Demand_Dominion</to>
+				</connector>
+				<flow x="844.167" y="129.167" name="New Demand Dominion">
+					<pts>
+						<pt x="890" y="129.167"/>
+						<pt x="798.333" y="129.167"/>
+					</pts>
+				</flow>
+				<stock label_side="top" x="775.833" y="129.167" name="Year Adjusted Demand Dominion"/>
+				<connector uid="21" angle="162.474">
+					<from>Year_Adjusted_Demand_Dominion</from>
+					<to>Projected_Electrical_Demand_Dominion</to>
+				</connector>
+				<connector uid="19" angle="24.9048">
+					<from>Year_Adjusted_Demand_Dominion</from>
+					<to>New_Demand_Dominion</to>
+				</connector>
+				<aux label_side="right" label_angle="45" x="942.167" y="125.333" name="Annual Demand Growth Dominion"/>
+				<connector uid="20" angle="139.02">
+					<from>Annual_Demand_Growth_Dominion</from>
+					<to>New_Demand_Dominion</to>
+				</connector>
+				<stock x="599" y="252" name="Projected Electrical\nDemand E-Plan"/>
+				<flow x="666.75" y="257" name="E-Plan Projected Additional Demand">
+					<pts>
+						<pt x="712" y="257"/>
+						<pt x="621.5" y="257"/>
+					</pts>
+				</flow>
+				<aux x="492" y="252" name="Projected Nuclear Demand E-Plan"/>
+				<connector uid="29" angle="140.631">
+					<from>&quot;Projected_Electrical_Demand_E-Plan&quot;</from>
+					<to>&quot;Projected_Nuclear_Demand_E-Plan&quot;</to>
+				</connector>
+				<connector uid="30" angle="298.926">
+					<from>Percent_Generated_from_Nuclear</from>
+					<to>&quot;Projected_Nuclear_Demand_E-Plan&quot;</to>
+				</connector>
+				<aux x="352.167" y="165" name="Dominion Demand"/>
+				<aux x="343.75" y="222.5" name="E-Plan Demand"/>
+				<connector uid="32" angle="185.763">
+					<from>&quot;Projected_Nuclear_Demand_E-Plan&quot;</from>
+					<to>&quot;E-Plan_Demand&quot;</to>
+				</connector>
+				<connector uid="33" angle="318.643">
+					<from>Historic_Nuclear_Generation</from>
+					<to>&quot;E-Plan_Demand&quot;</to>
+				</connector>
+				<connector uid="34" angle="350.3">
+					<from>Historic_Nuclear_Generation</from>
+					<to>Dominion_Demand</to>
+				</connector>
+				<connector uid="35" angle="192.804">
+					<from>Projected_Nuclear_Demand_Dominion</from>
+					<to>Dominion_Demand</to>
+				</connector>
+				<aux color="#AA00FF" font_color="#AA00FF" x="1443.5" y="143.333" name="MW per reactor"/>
+				<text_box font_color="white" uid="59" x="1501.67" y="82.5003" width="260" height="59.7503">Dominion assumes that starting in 2034, one 285 MW SMR can be constructed per year.
+Source: 2022 IRP</text_box>
+				<aux color="#AA00FF" font_color="#AA00FF" label_side="top" x="1540.84" y="213.417" name="Reactor per year"/>
+				<flow color="#AA00FF" font_color="#AA00FF" x="1471.67" y="246.417" width="18" height="18" name="New Reactors built">
+					<pts>
+						<pt x="1545" y="255.417"/>
+						<pt x="1428.33" y="255.417"/>
+						<pt x="1428.33" y="272.917"/>
+					</pts>
+				</flow>
+				<connector uid="60" angle="175.426">
+					<from>Reactor_per_year</from>
+					<to>New_Reactors_built</to>
+				</connector>
+				<stock color="#AA00FF" font_color="#AA00FF" x="1405.83" y="237.917" width="45" height="35" name="Total SMRs in Opperation"/>
+				<aux color="#AA00FF" font_color="#AA00FF" x="1308.5" y="246.417" width="18" height="18" name="Demand Filled by SMRS"/>
+				<connector uid="61" angle="160.486">
+					<from>Total_SMRs_in_Opperation</from>
+					<to>Demand_Filled_by_SMRS</to>
+				</connector>
+				<aux color="#AA00FF" font_color="#AA00FF" x="1357.29" y="77.6197" width="19.4286" height="19.4286" name="Hours per year"/>
+				<aux color="#AA00FF" font_color="#AA00FF" x="1367" y="156.667" name="MWH per reactor per year"/>
+				<connector uid="65" angle="181.54">
+					<from>MW_per_reactor</from>
+					<to>MWH_per_reactor_per_year</to>
+				</connector>
+				<connector uid="66" angle="189.652">
+					<from>MWH_per_reactor_per_year</from>
+					<to>Demand_Filled_by_SMRS</to>
+				</connector>
+				<aux x="1190.83" y="195.417" name="Dominion Shortfall"/>
+				<aux x="1181.83" y="246.417" width="18" height="18" name="E-Plan Shortfall"/>
+				<connector uid="70" angle="36.8699">
+					<from>
+						<alias uid="71"/>
+					</from>
+					<to>Dominion_Shortfall</to>
+				</connector>
+				<connector uid="72" angle="29.7449">
+					<from>
+						<alias uid="73"/>
+					</from>
+					<to>&quot;E-Plan_Shortfall&quot;</to>
+				</connector>
+				<connector uid="74" angle="119.407">
+					<from>Demand_Filled_by_SMRS</from>
+					<to>Dominion_Shortfall</to>
+				</connector>
+				<connector uid="75" angle="169.479">
+					<from>Demand_Filled_by_SMRS</from>
+					<to>&quot;E-Plan_Shortfall&quot;</to>
+				</connector>
+				<aux color="#AA00FF" font_color="#AA00FF" x="1317.5" y="312.833" name="Nuclear Generation with SMRs"/>
+				<connector uid="76" angle="298.926">
+					<from>Demand_Filled_by_SMRS</from>
+					<to>Nuclear_Generation_with_SMRs</to>
+				</connector>
+				<connector uid="77" angle="45">
+					<from>
+						<alias uid="78"/>
+					</from>
+					<to>Nuclear_Generation_with_SMRs</to>
+				</connector>
+				<stacked_container uid="79" x="112.5" y="855.917" width="498.25" height="344.333">
+					<graph font_color="#AA00FF" axis_color="#AA00FF" grid_color="#5D2F8C" axis_title_font_color="#AA00FF" axis_label_font_color="#AA00FF" width="498.25" height="344.333" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="7" num_y_grid_lines="6" num_x_labels="7" num_y_labels="6" title="Supply and Demand" isee:fill_intensity="0.1" to="2050" from="2020" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="#0055FF" pen_style="dotted" title="Projected N Demand Dominion" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Projected_Nuclear_Demand_Dominion"/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="aqua" pen_style="dotted" title="Projected N Demand E-Plan" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name='"Projected_Nuclear_Demand_E-Plan"'/>
+							<isee:data name="Projected"/>
+						</plot>
+						<plot color="red" isee:keep_zero_visible="true" pen_width="3" index="2" show_y_axis="true">
+							<entity name="Nuclear_Generation_with_SMRs"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<connector uid="80" angle="266.666">
+					<from>Hours_per_year</from>
+					<to>MWH_per_reactor_per_year</to>
+				</connector>
+				<aux color="red" font_color="red" x="832" y="278.5" name="Energy efficiency\nincrease per year"/>
+				<connector uid="82" angle="130.601">
+					<from>Energy_efficiency_increase_per_year</from>
+					<to>&quot;E-Plan_Projected_Additional_Demand&quot;</to>
+				</connector>
+				<connector uid="83" angle="131.285">
+					<from>Energy_efficiency_increase_per_year</from>
+					<to>New_Demand_Dominion</to>
+				</connector>
+				<text_box font_color="white" uid="84" x="1671" y="166.417" width="260" height="58">Dominion has a license to build a third reactor at North Anna, it would just be cost prohibitive.</text_box>
+				<stock color="yellow" font_color="yellow" label_side="center" x="1418.25" y="334.417" width="74" height="72" name="Reactor Construction Cost"/>
+				<flow color="yellow" font_color="yellow" label_side="right" label_angle="315" x="1552.79" y="351" name="Economies of Scale">
+					<pts>
+						<pt x="1625.33" y="351"/>
+						<pt x="1492.25" y="351"/>
+					</pts>
+				</flow>
+				<connector uid="88" angle="41.1109">
+					<from>Reactor_Construction_Cost</from>
+					<to>Economies_of_Scale</to>
+				</connector>
+				<aux color="yellow" font_color="yellow" label_side="right" x="1606.67" y="309.666" name="Cost reduction per\nadditional reactor"/>
+				<connector uid="89" angle="217.496">
+					<from>Cost_reduction_per_additional_reactor</from>
+					<to>Economies_of_Scale</to>
+				</connector>
+				<connector uid="94" angle="322.477">
+					<from>Total_SMRs_in_Opperation</from>
+					<to>Economies_of_Scale</to>
+				</connector>
+				<alias font_style="italic" uid="71" x="1096.83" y="186.417" width="18" height="18">
+					<of>Dominion_Demand</of>
+				</alias>
+				<alias font_style="italic" uid="73" x="1096.83" y="246.417" width="18" height="18">
+					<of>&quot;E-Plan_Demand&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="78" x="1181.83" y="303.833" width="18" height="18">
+					<of>Historic_Nuclear_Generation</of>
+				</alias>
+			</view>
+		</views>
+	</model>
+</xmile>
+
