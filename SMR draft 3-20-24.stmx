@@ -1,0 +1,1434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>SMR draft 3-20-24</name>
+		<uuid>3eecddf6-0cf4-4e9e-bad5-2aab542667ed</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="3.2.1" isee:build_number="2906" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:sim_duration="1.5" isee:run_prefix="Run" isee:simulation_delay="0.03" isee:restore_on_start="false" method="Euler" time_units="Years" isee:instantaneous_flows="false" isee:ignore_module_errors="false" isee:loop_scores="true" isee:loop_exhaustive_allowed="1000">
+		<start>2000</start>
+		<stop>2050</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<isee:prefs saved_runs="5" keep="false" show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" isee:design="Deluxe Prev-Next Blue Green Pastel" isee:design_custom="false" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" rerun_on_structure_change="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" max_advance_time_in_ms="0" model_stops_when_players_drop="false" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units>
+		<unit name="Dimensionless">
+			<eqn>1</eqn>
+			<alias>dmnl</alias>
+			<alias>unitless</alias>
+			<alias>fraction</alias>
+		</unit>
+		<unit name="People">
+			<eqn/>
+			<alias>person</alias>
+			<alias>persons</alias>
+		</unit>
+		<unit name="$">
+			<eqn/>
+			<alias>dollar</alias>
+			<alias>dollars</alias>
+		</unit>
+		<unit name="Hours">
+			<eqn/>
+			<alias>hr</alias>
+			<alias>hour</alias>
+		</unit>
+		<unit name="Years">
+			<eqn/>
+			<alias>yr</alias>
+			<alias>year</alias>
+		</unit>
+		<unit name="kilowatt hours per day">
+			<eqn>kWh/day</eqn>
+		</unit>
+		<unit name="kilowatts">
+			<eqn>kW</eqn>
+			<alias>kilowatt</alias>
+		</unit>
+	</model_units>
+	<model>
+		<variables>
+			<aux name="MW per reactor">
+				<doc>From Dominion&apos;s 2022 IRP</doc>
+				<eqn>285</eqn>
+				<units>mW/Reactors</units>
+			</aux>
+			<aux name="Time to complete\nConstruction">
+				<eqn>{0+STEP(1, 2034)} 
+3</eqn>
+				<units>Years</units>
+			</aux>
+			<flow name="New\nReactors Built">
+				<eqn>SMRs_Under_Construction/Time_to_complete_Construction</eqn>
+				<non_negative/>
+				<units>Reactors/Years</units>
+			</flow>
+			<stock name="Total SMRs\nin Operation">
+				<eqn>0</eqn>
+				<inflow>New_Reactors_Built</inflow>
+				<non_negative/>
+				<units>Reactors</units>
+			</stock>
+			<aux name="Demand Filled\nby SMRS">
+				<eqn>Hours_per_year*Potential_MW_of_Generating_Capacity</eqn>
+				<units>(mW*h)/Year</units>
+			</aux>
+			<aux name="Hours per year">
+				<eqn>8760</eqn>
+				<units>h/Year</units>
+			</aux>
+			<aux name="Ratio of Demand\nto Supply">
+				<eqn>Demand_Filled_by_SMRS//New_Dominion_Demand</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<stock name="SMR\nBudget">
+				<eqn>0</eqn>
+				<inflow>Additions_to_budget</inflow>
+				<outflow>Expenditures_to_budget</outflow>
+				<units>dollars</units>
+			</stock>
+			<flow name="Additions\nto budget">
+				<eqn>Effect_of_demand_ratio_of_money_allocated*Current_funding_for_SMRs*Effect_of_Licenses_on_Budgets</eqn>
+				<non_negative/>
+				<units>Dollars/Year</units>
+			</flow>
+			<flow name="Expenditures\nto budget">
+				<eqn>(SMR_Budget/Time_to_spend_money)*Effect_of_the_sites_ratio</eqn>
+				<non_negative/>
+				<units>Dollars/Year</units>
+			</flow>
+			<stock name="SMRs\nUnder\nConstruction">
+				<eqn>0</eqn>
+				<inflow>New_SMRs_Started</inflow>
+				<outflow>New_Reactors_Built</outflow>
+				<units>Reactors</units>
+			</stock>
+			<aux name="Construction\nUnderway">
+				<eqn>(Expenditures_to_budget/Dollars_per_Reactor)</eqn>
+				<units>Reactors/Years</units>
+			</aux>
+			<aux name="Dollars per\nReactor">
+				<eqn>5e9</eqn>
+				<units>Dollars/Reactors</units>
+			</aux>
+			<aux name="Effect of\ndemand ratio\nof money allocated">
+				<eqn>Ratio_of_Demand_to_Supply</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0" max="2"/>
+					<ypts>2,2,1.999,1.997,1.991,1.979,1.947,1.868,1.673,1.191,0</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Normal Funding\nFor SMRs">
+				<eqn>1e9</eqn>
+				<units>Dollars/Year</units>
+			</aux>
+			<aux name="Time to\nspend money">
+				<eqn>4</eqn>
+				<units>Years</units>
+			</aux>
+			<aux name="Current funding\nfor SMRs">
+				<eqn>Normal_Funding_For_SMRs*(STEP(1, Year_SMRs_Start))</eqn>
+				<units>Dollars/Year</units>
+			</aux>
+			<aux name="Year SMRs\nStart">
+				<eqn>2025</eqn>
+				<format precision="1" scale_by="1"/>
+				<range min="2024" max="2040"/>
+				<units>Years</units>
+			</aux>
+			<aux name="Fraction demand by\nNuclear">
+				<eqn>0.28</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="New Dominion\nDemand">
+				<eqn>Fraction_demand_by_Nuclear*Annual_Demand_for_Electricity_in_Virginia</eqn>
+				<units>MW*h/Year</units>
+			</aux>
+			<stock name="Virginia\nPopulation">
+				<doc>https://www.census.gov/quickfacts/fact/table/VA/PST045223#PST045223
+
+Current population in Virginia via the US Census</doc>
+				<eqn>{3.98e6}
+8715698.0</eqn>
+				<inflow>&quot;Net_Change_in_U.S._Population&quot;</inflow>
+				<units>People</units>
+			</stock>
+			<flow name="Net Change\nin U.S.\nPopulation">
+				<eqn>Virginia_Population*Population_Net_Growth_Fraction*Adequacy_of_ecosystem_to_support_more_growth</eqn>
+				<units>People/Years</units>
+			</flow>
+			<aux name="Population\nNet Growth\nFraction">
+				<eqn>.0153</eqn>
+				<range min="0" max="0.02"/>
+				<units>1/Year</units>
+			</aux>
+			<aux name='"Ratio:\nPopulation to\nCarrying Capacity"'>
+				<eqn>Virginia_Population/&quot;Virginia_Carrying_Capacity\&quot;&quot;</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Adequacy of\necosystem to\nsupport more growth">
+				<eqn>&quot;\&quot;Ratio:_Population_to_Carrying_Capacity\&quot;&quot;</eqn>
+				<gf>
+					<xscale min="0" max="2"/>
+					<yscale min="-1" max="1"/>
+					<ypts>1,1,0.97975,0.932607142857143,0.853428571428572,0.726167582417583,0.537746003996004,0.291349650349651,0.00925174825174885,-0.274466783216783,-0.526023976023976,-0.722706043956044,-0.857928571428571,-0.939357142857143,-0.982,-1,-1</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name='Virginia\nCarrying\nCapacity"'>
+				<eqn>12e6</eqn>
+				<format precision="1000"/>
+				<range min="330000" max="1000000"/>
+				<units>People</units>
+			</aux>
+			<aux name="Historical and Project\nPopulation of Virginia">
+				<doc>University of Virginia. (2020, May). Virginia population estimates. Weldon Cooper Center for Public Service. Retrieved April 4, 2022, from https://demographics.coopercenter.org/virginia-population-estimates/ 
+
+Historical population data for Virginia</doc>
+				<eqn>TIME</eqn>
+				<gf>
+					<yscale min="0" max="100"/>
+					<xpts>1960,1961,1962,1963,1964,1965,1966,1967,1968,1969,1970,1971,1972,1973,1974,1975,1976,1977,1978,1979,1980,1981,1982,1983,1984,1985,1986,1987,1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2030,2040,2050,2051</xpts>
+					<ypts>3966966,4095000,4180000,4276000,4357000,4411000,4456000,4508000,4558000,4614000,4651487,4752600,4828100,4907200,4978600,5056000,5132500,5205400,5284500,5324400,5346818,5444100,5492800,5564700,5643900,5715100,5811700,5932300,6036900,6120200,6187358,6306800,6428200,6521700,6615100,6696100,6759800,6846100,6912800,7011500,7107050,7204928,7302731,7386346,7510260,7600467,7683718,7749603,7854031,7928779,8025514,8096604,8185867,8260405,8326289,8382993,8411808,8470020,8517685,8535519,8586967,9129002,9759371,10535810,NaN</ypts>
+				</gf>
+				<units>People</units>
+			</aux>
+			<group name="Population Sector" run="false">
+				<entity name="Population_Net_Growth_Fraction"/>
+				<entity name="Historical_and_Project_Population_of_Virginia"/>
+				<entity name="Adequacy_of_ecosystem_to_support_more_growth"/>
+				<entity name='"\"Ratio:_Population_to_Carrying_Capacity\""'/>
+				<entity name="Virginia_Population"/>
+				<entity name="Annual_MWh_per_Person"/>
+				<entity name="Annual_Demand_for_Electricity_in_Virginia"/>
+				<entity name='"Net_Change_in_U.S._Population"'/>
+				<entity name='"Virginia_Carrying_Capacity\""'/>
+			</group>
+			<aux name="Annual MWh\nper Person">
+				<doc>https://findenergy.com/va/#:~:text=Residents%20in%20the%20state%20have,1.27%20outages%20and%20137.24%20minutes.
+
+Average MWh per year per capita</doc>
+				<eqn>14.8</eqn>
+				<units>mW*h/People/Year</units>
+			</aux>
+			<aux name="Annual Demand\nfor Electricity\nin Virginia">
+				<eqn>Annual_MWh_per_Person*Virginia_Population</eqn>
+				<units>MW*h/Year</units>
+			</aux>
+			<aux name="Total Plants in Operation\nor Under Construction">
+				<eqn>Total_SMRs_in_Operation+SMRs_Under_Construction</eqn>
+				<units>Reactors</units>
+			</aux>
+			<aux name="Potential MW of Generating\nCapacity">
+				<eqn>MW_per_reactor*Total_Plants_in_Operation_or_Under_Construction</eqn>
+				<units>mW</units>
+			</aux>
+			<aux name="NRC Permit Processing\nTime Delay">
+				<eqn>5</eqn>
+				<units>Years</units>
+			</aux>
+			<stock name="NRC Applications\nunder review">
+				<eqn>0</eqn>
+				<inflow>New_Licensing_Applications_submitted</inflow>
+				<inflow>Resubmitted_Applications</inflow>
+				<outflow>Failed_Applications</outflow>
+				<outflow>Approved_Applications</outflow>
+				<units>Permits</units>
+			</stock>
+			<flow name="New Licensing\nApplications\nsubmitted">
+				<eqn>((New_Reactor_Design)/NRC_Permit_Processing_Time_Delay) * (0+STEP(Switch_for_nuclear_start, Year_for_Nuclear_Start))*Effect_of_demand_ratio_on_new_permits</eqn>
+				<non_negative/>
+				<units>Permits/Years</units>
+			</flow>
+			<stock name="Licenses\napproved">
+				<eqn>0</eqn>
+				<inflow>Approved_Applications</inflow>
+				<units>Permits</units>
+			</stock>
+			<stock name="Licenses\nFailed/Withdrawn">
+				<eqn>0</eqn>
+				<inflow>Failed_Applications</inflow>
+				<outflow>Resubmitted_Applications</outflow>
+				<units>Permits</units>
+			</stock>
+			<flow name="Failed Applications">
+				<eqn>((1 - Fraction_license_approved) * NRC_Applications_under_review)/NRC_Permit_Processing_Time_Delay</eqn>
+				<non_negative/>
+				<units>Permits/Years</units>
+			</flow>
+			<flow name="Approved Applications">
+				<eqn>(Fraction_license_approved*NRC_Applications_under_review)/NRC_Permit_Processing_Time_Delay</eqn>
+				<non_negative/>
+				<units>Permits/Years</units>
+			</flow>
+			<flow name="Resubmitted\nApplications">
+				<eqn>(Fraction_license_apps_resubmitted*&quot;Licenses_Failed/Withdrawn&quot;)/NRC_Permit_Processing_Time_Delay</eqn>
+				<non_negative/>
+				<units>Permits/Years</units>
+			</flow>
+			<aux name="New\nReactor\nDesign">
+				<eqn>4</eqn>
+				<units>Permits</units>
+			</aux>
+			<aux name="Fraction license\napproved">
+				<eqn>0.25</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Fraction license\napps resubmitted">
+				<eqn>0.25</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<flow name="New SMRs\nStarted">
+				<eqn>Construction_Underway</eqn>
+				<non_negative/>
+				<units>Reactors/Years</units>
+			</flow>
+			<aux name="Switch\nfor nuclear start">
+				<eqn>0</eqn>
+				<format precision="1"/>
+				<range min="0" max="1"/>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Year for Nuclear Start">
+				<eqn>2020</eqn>
+				<units>Years</units>
+			</aux>
+			<aux name="Projects per\nLicense">
+				<eqn>1</eqn>
+				<units>Permits</units>
+			</aux>
+			<aux name="Ratio of Projects\nper license">
+				<eqn>Licenses_approved//Projects_per_License</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="effect of license\nratio on new\ndesigns">
+				<eqn>Ratio_of_Projects_per_license</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0" max="1"/>
+					<ypts>1,0.9999,0.9997,0.9991,0.9976,0.9933,0.9817,0.9503,0.8647,0.6321,0</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Effect of Licenses\non Budgets">
+				<eqn>Ratio_of_Projects_per_license</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0" max="1"/>
+					<ypts>0,0.00007801,0.0002901,0.0008665,0.002433,0.006693,0.01827,0.04974,0.1353,0.3679,1</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="dollars per\nmegawatt hour">
+				<eqn>124</eqn>
+				<units>Dollars/(mW*h)</units>
+			</aux>
+			<aux name="potential annual\nincome">
+				<eqn>dollars_per_megawatt_hour*Demand_Filled_by_SMRS</eqn>
+				<units>Dollars/Year</units>
+			</aux>
+			<stock name="Average annual\nincome of Dominion">
+				<eqn>potential_annual_income</eqn>
+				<inflow>Net_change_in_annual_average_income</inflow>
+				<units>Dollars/Year</units>
+			</stock>
+			<flow name="Net change in\nannual average income">
+				<eqn>(potential_annual_income - Average_annual_income_of_Dominion)/adjustment_time_for_average_annual_income</eqn>
+				<non_negative/>
+				<units>Dollars/Year/Years</units>
+			</flow>
+			<aux name="adjustment time\nfor average annual income">
+				<eqn>3</eqn>
+				<units>Years</units>
+			</aux>
+			<aux name="Dollars per Megawatthour">
+				<doc>VA cost per kwh is 12.4 c/kwh
+
+cost per MWh is 124 $/MWh</doc>
+				<eqn>124</eqn>
+				<range min="100" max="200"/>
+				<units>Dollars/(mW*h)</units>
+			</aux>
+			<aux name="Revenue per\nyear">
+				<eqn>Demand_Filled_by_SMRS*Average_price_of_electricity</eqn>
+				<units>Dollars/Year</units>
+			</aux>
+			<aux name="Cost per plant">
+				<eqn>3e9</eqn>
+				<units>Dollars/Reactors</units>
+			</aux>
+			<aux name="Current cost\nper plant">
+				<eqn>Cost_per_plant*Inflationary_Test</eqn>
+				<units>Dollars/Reactors</units>
+			</aux>
+			<aux name="Inflationary\nTest">
+				<eqn>1</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Total Construction Cost">
+				<eqn>Current_cost_per_plant*Total_SMRs_in_Operation</eqn>
+				<units>Dollars</units>
+			</aux>
+			<stock name="Cumulative\nRevenues">
+				<eqn>0</eqn>
+				<inflow>Additions_to_Cumulative_Revenue</inflow>
+				<units>Dollars</units>
+			</stock>
+			<flow name="Additions\nto Cumulative\nRevenue">
+				<eqn>Annual_Profits</eqn>
+				<non_negative/>
+				<units>Dollars/Year</units>
+			</flow>
+			<aux name="Annual Profits">
+				<eqn>Revenue_per_year*Profit_Margins</eqn>
+				<units>Dollars/Year</units>
+			</aux>
+			<aux name="Profit Margins">
+				<eqn>0.21</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<group name="NIMBY" run="false">
+				<entity name="NIMBY_People"/>
+				<entity name="NIMBYism_per_Site_Selected"/>
+				<entity name="Reductions_in_NIMBY_People"/>
+				<entity name="Ratio_of_NIMBY_People_to_Problem_Level"/>
+				<entity name="Effect_of_the_NIMBY_Ratio_on_Site_Selection"/>
+				<entity name="Additions_to_NIMBY_people"/>
+				<entity name="Community_Engagement"/>
+				<entity name="Amount_of_NIMBYism_to_Cause_Problems"/>
+			</group>
+			<stock name="NIMBY\nPeople">
+				<eqn>0</eqn>
+				<inflow>Additions_to_NIMBY_people</inflow>
+				<outflow>Reductions_in_NIMBY_People</outflow>
+				<units>People</units>
+			</stock>
+			<flow name="Additions to\nNIMBY people">
+				<eqn>NIMBYism_per_Site_Selected*New_sites_selected</eqn>
+				<non_negative/>
+				<units>People/Years</units>
+			</flow>
+			<flow name="Reductions in\nNIMBY People">
+				<eqn>NIMBY_People*Community_Engagement</eqn>
+				<non_negative/>
+				<units>People/Years</units>
+			</flow>
+			<stock name="Sites selected">
+				<eqn>0</eqn>
+				<inflow>New_sites_selected</inflow>
+				<outflow>Sites_Cancelled</outflow>
+				<units>Sites</units>
+			</stock>
+			<flow name="New sites\nselected">
+				<eqn>(Sites_proposed*Effect_of_Ratio_on_new_sites_selected)/Adjustment_time_for_site_selection</eqn>
+				<non_negative/>
+				<units>sites/Years</units>
+			</flow>
+			<aux name="Desired number\nof sites">
+				<eqn>30</eqn>
+				<units>Sites</units>
+			</aux>
+			<aux name="ratio sites\nselected to desired number\nof sites">
+				<eqn>Sites_selected/Desired_number_of_sites</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Effect of Ratio\non new sites\nselected">
+				<eqn>ratio_sites_selected_to_desired_number_of_sites</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0" max="0.1"/>
+					<ypts>0.1,0.09999,0.09997,0.09991,0.09976,0.09933,0.09817,0.09503,0.08647,0.06321,0</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Sites per reactors">
+				<eqn>3.3</eqn>
+				<units>Sites/Permits</units>
+			</aux>
+			<aux name="Sites proposed">
+				<eqn>Sites_per_reactors*Licenses_approved</eqn>
+				<units>Sites</units>
+			</aux>
+			<aux name="Adjustment\ntime for\nsite selection">
+				<eqn>5</eqn>
+				<units>Years</units>
+			</aux>
+			<aux name="Effect of ratio of sites on\nNIMBY-ism">
+				<eqn>ratio_sites_selected_to_desired_number_of_sites</eqn>
+				<gf>
+					<xscale min="0" max="2"/>
+					<yscale min="0" max="3"/>
+					<ypts>0,0.0379,0.1302,0.3496,0.8028,1.5,2.197,2.65,2.87,2.962,3</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Community\nEngagement">
+				<eqn>1</eqn>
+				<units>Dimensionless/Year</units>
+			</aux>
+			<aux name="NIMBYism per\nSite Selected">
+				<eqn>250</eqn>
+				<units>People/sites</units>
+			</aux>
+			<aux name="Amount of NIMBYism\nto Cause Problems">
+				<eqn>750</eqn>
+				<units>People</units>
+			</aux>
+			<aux name="Ratio of NIMBY People to Problem Level">
+				<eqn>NIMBY_People/Amount_of_NIMBYism_to_Cause_Problems</eqn>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Effect of the NIMBY\nRatio on Site Selection">
+				<eqn>Ratio_of_NIMBY_People_to_Problem_Level</eqn>
+				<gf>
+					<xscale min="0" max="3"/>
+					<yscale min="0" max="0.05"/>
+					<ypts>0,0.0006316,0.002171,0.005826,0.01338,0.025,0.03662,0.04417,0.04783,0.04937,0.05</ypts>
+				</gf>
+				<units>Dimensionless/Year</units>
+			</aux>
+			<group name="Site Selection" run="false">
+				<entity name="Desired_number_of_sites"/>
+				<entity name="Effect_of_the_sites_ratio"/>
+				<entity name="New_sites_selected"/>
+				<entity name="Adjustment_time_for_site_selection"/>
+				<entity name="Sites_per_reactors"/>
+				<entity name="Sites_selected"/>
+				<entity name="Ratio_of_total_plants_to_sites_selected"/>
+				<entity name="Sites_Cancelled"/>
+				<entity name="Sites_proposed"/>
+				<entity name="ratio_sites_selected_to_desired_number_of_sites"/>
+				<entity name="Effect_of_Ratio_on_new_sites_selected"/>
+				<entity name='"Effect_of_ratio_of_sites_on_NIMBY-ism"'/>
+			</group>
+			<flow name="Sites Cancelled">
+				<eqn>Effect_of_the_NIMBY_Ratio_on_Site_Selection*Sites_selected</eqn>
+				<non_negative/>
+				<units>Sites/Years</units>
+			</flow>
+			<aux name="Ratio of total\nplants to sites selected">
+				<eqn>Total_Plants_in_Operation_or_Under_Construction//Sites_selected</eqn>
+				<units>Reactors/Sites</units>
+			</aux>
+			<aux name="Effect of the sites ratio">
+				<eqn>Ratio_of_total_plants_to_sites_selected</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0" max="1"/>
+					<ypts>1,0.98,0.9534,0.9179,0.8707,0.8077,0.7238,0.612,0.463,0.2645,0</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Effect of demand\nratio on new permits">
+				<eqn>Ratio_of_Demand_to_Supply</eqn>
+				<gf>
+					<xscale min="0" max="1"/>
+					<yscale min="0" max="1"/>
+					<ypts>1,0.9999,0.9997,0.9991,0.9976,0.9933,0.9817,0.9503,0.8647,0.6321,0</ypts>
+				</gf>
+				<units>Dimensionless</units>
+			</aux>
+			<stock name="Average price of electricity">
+				<eqn>Dollars_per_Megawatthour</eqn>
+				<inflow>Net_change_in_average_price_of_electricity</inflow>
+				<non_negative/>
+				<units>Dollars/(mW*h)</units>
+			</stock>
+			<flow name="Net change in average price of electricity">
+				<eqn>(Current_Dollars_per_Megawatthour-Average_price_of_electricity)/Time_to_adjust_average_price</eqn>
+				<units>Dollars/(mW*h)/Years</units>
+			</flow>
+			<aux name="Time to adjust average price">
+				<eqn>3</eqn>
+				<units>Years</units>
+			</aux>
+			<aux name="Current Dollars per Megawatthour">
+				<eqn>Dollars_per_Megawatthour*(1+STEP(Fraction_Gov_subsidy, Year_Gov_Subsidy_starts))</eqn>
+				<units>Dollars/(mW*h)</units>
+			</aux>
+			<aux name="Fraction Gov subsidy">
+				<eqn>0</eqn>
+				<range min="-0.5" max="0.5"/>
+				<units>Dimensionless</units>
+			</aux>
+			<aux name="Year Gov Subsidy starts">
+				<eqn>2025</eqn>
+				<format precision="1" scale_by="1"/>
+				<range min="2025" max="2050"/>
+				<units>Years</units>
+			</aux>
+			<group name="NRC Licenses" run="false">
+				<entity name="Licenses_approved"/>
+				<entity name="NRC_Applications_under_review"/>
+				<entity name="New_SMRs_Started"/>
+				<entity name="Projects_per_License"/>
+				<entity name="effect_of_license_ratio_on_new_designs"/>
+				<entity name="Resubmitted_Applications"/>
+				<entity name="Switch_for_nuclear_start"/>
+				<entity name="Failed_Applications"/>
+				<entity name="NRC_Permit_Processing_Time_Delay"/>
+				<entity name="New_Licensing_Applications_submitted"/>
+				<entity name="Ratio_of_Projects_per_license"/>
+				<entity name="Fraction_license_approved"/>
+				<entity name="Approved_Applications"/>
+				<entity name='"Licenses_Failed/Withdrawn"'/>
+				<entity name="Fraction_license_apps_resubmitted"/>
+				<entity name="Year_for_Nuclear_Start"/>
+				<entity name="New_Reactor_Design"/>
+			</group>
+			<aux name="Total Historical\nElectricity Demand">
+				<eqn>TIME</eqn>
+				<gf>
+					<yscale min="0" max="100"/>
+					<xpts>1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022</xpts>
+					<ypts>52564458,54729096,56352355,61243511,62048926,62996021,66895125,68515334,72199443,73897608,77189371,74104744,75005651,75309420,78900040,78943045,73069537,78360507,72678531,70082066,72966456,66670859,70739235,76896565,77137438,84411592,92554876,90417149,95509121,96827639,103056001,93478182,NaN</ypts>
+				</gf>
+				<units>Megawatts*hours</units>
+			</aux>
+			<group name="Demand" run="false">
+				<entity name="Hours_per_year"/>
+				<entity name="New_Dominion_Demand"/>
+				<entity name="Demand_Filled_by_SMRS"/>
+				<entity name="Ratio_of_Demand_to_Supply"/>
+				<entity name="Normal_Funding_For_SMRs"/>
+				<entity name="Year_SMRs_Start"/>
+				<entity name="Current_funding_for_SMRs"/>
+				<entity name="Effect_of_demand_ratio_of_money_allocated"/>
+				<entity name="Revenue_per_year"/>
+				<entity name="Fraction_demand_by_Nuclear"/>
+				<entity name="Effect_of_demand_ratio_on_new_permits"/>
+			</group>
+			<group name="Supply" run="false">
+				<entity name="Potential_MW_of_Generating_Capacity"/>
+				<entity name="Total_Plants_in_Operation_or_Under_Construction"/>
+				<entity name="New_Reactors_Built"/>
+				<entity name="Time_to_complete_Construction"/>
+				<entity name="Construction_Underway"/>
+				<entity name="MW_per_reactor"/>
+				<entity name="Total_SMRs_in_Operation"/>
+				<entity name="SMRs_Under_Construction"/>
+				<entity name="New_SMRs_Started"/>
+			</group>
+			<group name="Budget" run="false">
+				<entity name="SMR_Budget"/>
+				<entity name="Time_to_spend_money"/>
+				<entity name="Additions_to_budget"/>
+				<entity name="Expenditures_to_budget"/>
+				<entity name="Effect_of_Licenses_on_Budgets"/>
+			</group>
+			<group name="Revenue and Subsidies" run="false">
+				<entity name="Current_cost_per_plant"/>
+				<entity name="Year_Gov_Subsidy_starts"/>
+				<entity name="Inflationary_Test"/>
+				<entity name="Total_Construction_Cost"/>
+				<entity name="Dollars_per_Megawatthour"/>
+				<entity name="Average_price_of_electricity"/>
+				<entity name="Net_change_in_average_price_of_electricity"/>
+				<entity name="Average_annual_income_of_Dominion"/>
+				<entity name="Time_to_adjust_average_price"/>
+				<entity name="Current_Dollars_per_Megawatthour"/>
+				<entity name="Profit_Margins"/>
+				<entity name="Additions_to_Cumulative_Revenue"/>
+				<entity name="Annual_Profits"/>
+				<entity name="potential_annual_income"/>
+				<entity name="dollars_per_megawatt_hour"/>
+				<entity name="Cumulative_Revenues"/>
+				<entity name="Fraction_Gov_subsidy"/>
+				<entity name="Net_change_in_annual_average_income"/>
+				<entity name="Cost_per_plant"/>
+				<entity name="adjustment_time_for_average_annual_income"/>
+			</group>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+				<graph color="black" background="white" font_weight="bold" font_size="24pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="18pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="18pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="3"/>
+						<isee:series_style color="red" thickness="3" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="3" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="3" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="3"/>
+						<isee:series_style color="#7F00FF" thickness="3" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="3" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="3" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="3"/>
+						<isee:series_style color="aqua" thickness="3" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="3" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="3" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="3"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" border_width="thin" border_style="solid" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_corner_radius="0" popup_background_color="#FFFECF"/>
+				<slider color="#66CC66" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:fancy_appearance="false" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:dual_slider color="#66CC66" background="silver" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" isee:show_hover_tip="when_deciding" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch" isee:on_color="green"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt" isee:show_hover_tip="true"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+				<isee:navigation_widget color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" padding="6 8" border_color="#999999" border_width="thin" border_style="solid" item_spacing="6" appearance="tabs" corner_radius="4" selected_item_color="black" selected_item_background="white" item_background="#DDDDDD" transparent_bg="false"/>
+				<isee:shape color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid" opacity="1" transparent_background="true" corner_radius="1"/>
+				<isee:selector color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
+				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+			</style>
+			<view isee:show_pages="false" background="white" isee:converter_size="name_only" page_width="1034" page_height="794" isee:page_cols="7" isee:page_rows="4" isee:scroll_x="1071.67" zoom="60" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="18pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="18pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</flow>
+					<isee:placeholder color="#228B22" background="white" font_color="#228B22" font_size="18pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="18pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="18pt" label_side="bottom">
+						<shape type="name_only"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="18pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="18pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="white" background="white" font_size="12pt" border_width="thin" border_style="solid" isee:transparent="false" isee:show_divider="true" isee:show_bounding_box="true" label_side="left"/>
+					<graph color="black" background="white" font_weight="bold" font_size="24pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="18pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="18pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="3"/>
+							<isee:series_style color="red" thickness="3" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="3" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="3" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="3"/>
+							<isee:series_style color="#7F00FF" thickness="3" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="3" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="3" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="3"/>
+							<isee:series_style color="aqua" thickness="3" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="3" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="3" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="3"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<aux color="#AA00FF" font_color="#AA00FF" x="961.807" y="135.5" width="132.5" height="24" name="MW per reactor"/>
+				<aux color="#AA00FF" font_color="#AA00FF" label_side="top" x="1168.15" y="489.972" width="144.5" height="46" name="Time to complete\nConstruction"/>
+				<flow color="#AA00FF" font_color="#AA00FF" label_side="top" x="1205.27" y="386.889" name="New\nReactors Built">
+					<pts>
+						<pt x="1313.15" y="386.889"/>
+						<pt x="1085.39" y="386.889"/>
+					</pts>
+				</flow>
+				<connector uid="1" angle="67.0685">
+					<from>Time_to_complete_Construction</from>
+					<to>New_Reactors_Built</to>
+				</connector>
+				<stock color="#AA00FF" font_color="#AA00FF" label_side="center" x="955.387" y="360.472" width="130" height="100" name="Total SMRs\nin Operation"/>
+				<aux color="#AA00FF" font_color="#AA00FF" x="686.583" y="196.472" width="123.5" height="46" name="Demand Filled\nby SMRS"/>
+				<aux color="#AA00FF" font_color="#AA00FF" x="681.311" y="100.5" width="127.5" height="24" name="Hours per year"/>
+				<connector uid="3" angle="267.39">
+					<from>MW_per_reactor</from>
+					<to>Potential_MW_of_Generating_Capacity</to>
+				</connector>
+				<aux x="553.637" y="276.805" width="142.5" height="46" name="Ratio of Demand\nto Supply"/>
+				<connector uid="5" angle="213.054">
+					<from>Demand_Filled_by_SMRS</from>
+					<to>Ratio_of_Demand_to_Supply</to>
+				</connector>
+				<stock label_side="center" x="1072.53" y="692.611" width="130" height="100" name="SMR\nBudget"/>
+				<flow x="997.945" y="739.556" name="Additions\nto budget">
+					<pts>
+						<pt x="923.36" y="739.556"/>
+						<pt x="1072.53" y="739.556"/>
+					</pts>
+				</flow>
+				<flow x="1340.22" y="754" name="Expenditures\nto budget">
+					<pts>
+						<pt x="1202.53" y="754"/>
+						<pt x="1501.92" y="754"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="1313.15" y="342.167" width="130" height="100" name="SMRs\nUnder\nConstruction"/>
+				<connector uid="7" angle="189.869">
+					<from>SMRs_Under_Construction</from>
+					<to>New_Reactors_Built</to>
+				</connector>
+				<aux x="1320.75" y="535.972" width="109.5" height="46" name="Construction\nUnderway"/>
+				<connector uid="8" angle="79.7471">
+					<from>Expenditures_to_budget</from>
+					<to>Construction_Underway</to>
+				</connector>
+				<aux x="1327.75" y="603.222" width="95.5" height="46" name="Dollars per\nReactor"/>
+				<connector uid="9" angle="90">
+					<from>Dollars_per_Reactor</from>
+					<to>Construction_Underway</to>
+				</connector>
+				<aux x="645.136" y="515.834" width="158.5" height="68" name="Effect of\ndemand ratio\nof money allocated"/>
+				<aux x="701.857" y="813.139" width="135.5" height="46" name="Normal Funding\nFor SMRs"/>
+				<connector uid="10" angle="325.257">
+					<from>Effect_of_demand_ratio_of_money_allocated</from>
+					<to>Additions_to_budget</to>
+				</connector>
+				<connector uid="11" angle="93.4182">
+					<from>Normal_Funding_For_SMRs</from>
+					<to>Current_funding_for_SMRs</to>
+				</connector>
+				<aux x="1104.83" y="821.722" width="115.5" height="46" name="Time to\nspend money"/>
+				<connector uid="12" angle="75.513">
+					<from>Time_to_spend_money</from>
+					<to>Expenditures_to_budget</to>
+				</connector>
+				<connector uid="13" angle="23.5565">
+					<from>SMR_Budget</from>
+					<to>Expenditures_to_budget</to>
+				</connector>
+				<aux x="691.913" y="621.555" width="132.5" height="46" name="Current funding\nfor SMRs"/>
+				<connector uid="14" angle="338.387">
+					<from>Current_funding_for_SMRs</from>
+					<to>Additions_to_budget</to>
+				</connector>
+				<aux x="763.447" y="705.167" width="98.5" height="46" name="Year SMRs\nStart"/>
+				<connector uid="15" angle="123.113">
+					<from>Year_SMRs_Start</from>
+					<to>Current_funding_for_SMRs</to>
+				</connector>
+				<connector uid="16" angle="249.413">
+					<from>Ratio_of_Demand_to_Supply</from>
+					<to>Effect_of_demand_ratio_of_money_allocated</to>
+				</connector>
+				<aux x="306.58" y="99.5" width="166.5" height="46" name="Fraction demand by\nNuclear"/>
+				<aux x="536.113" y="135.5" width="124.5" height="46" name="New Dominion\nDemand"/>
+				<connector uid="18" angle="22.6938">
+					<from>Fraction_demand_by_Nuclear</from>
+					<to>New_Dominion_Demand</to>
+				</connector>
+				<connector uid="20" angle="250.45">
+					<from>New_Dominion_Demand</from>
+					<to>Ratio_of_Demand_to_Supply</to>
+				</connector>
+				<stock label_side="center" x="3633.09" y="294" width="113" height="77" name="Virginia\nPopulation"/>
+				<flow label_side="bottom" x="3516.45" y="325.25" name="Net Change\nin U.S.\nPopulation">
+					<pts>
+						<pt x="3387.8" y="325.25"/>
+						<pt x="3633.09" y="325.25"/>
+					</pts>
+				</flow>
+				<connector uid="22" angle="143.471">
+					<from>Virginia_Population</from>
+					<to>&quot;Net_Change_in_U.S._Population&quot;</to>
+				</connector>
+				<aux x="3386.3" y="211.25" width="99.5" height="68" name="Population\nNet Growth\nFraction"/>
+				<connector uid="23" angle="338.399">
+					<from>Population_Net_Growth_Fraction</from>
+					<to>&quot;Net_Change_in_U.S._Population&quot;</to>
+				</connector>
+				<aux x="3499.3" y="473" width="157.5" height="68" name='"Ratio:\nPopulation to\nCarrying Capacity"'/>
+				<connector uid="24" angle="283.691">
+					<from>Virginia_Population</from>
+					<to>&quot;\&quot;Ratio:_Population_to_Carrying_Capacity\&quot;&quot;</to>
+				</connector>
+				<aux x="3291.96" y="442.5" width="172.5" height="68" name="Adequacy of\necosystem to\nsupport more growth"/>
+				<connector uid="25" angle="186.636">
+					<from>&quot;\&quot;Ratio:_Population_to_Carrying_Capacity\&quot;&quot;</from>
+					<to>Adequacy_of_ecosystem_to_support_more_growth</to>
+				</connector>
+				<connector uid="26" angle="121.675">
+					<from>Adequacy_of_ecosystem_to_support_more_growth</from>
+					<to>&quot;Net_Change_in_U.S._Population&quot;</to>
+				</connector>
+				<aux x="3768.71" y="505.92" width="84.5" height="68" name='Virginia\nCarrying\nCapacity"'/>
+				<connector uid="27" angle="171.955">
+					<from>&quot;Virginia_Carrying_Capacity\&quot;&quot;</from>
+					<to>&quot;\&quot;Ratio:_Population_to_Carrying_Capacity\&quot;&quot;</to>
+				</connector>
+				<stacked_container uid="28" x="4060.21" y="129.999" width="598.787" height="402.5">
+					<graph legend_position="bottom" width="598.787" height="402.5" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="11" num_y_grid_lines="5" num_x_labels="11" num_y_labels="5" title="Historical vs Simulated Virginia Population" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="2" index="0" show_y_axis="true">
+							<entity name="Virginia_Population"/>
+						</plot>
+						<plot color="red" isee:keep_zero_visible="true" pen_width="2" index="1" show_y_axis="true">
+							<entity name="Historical_and_Project_Population_of_Virginia"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="3281.75" y="87.222" width="178.5" height="46" name="Historical and Project\nPopulation of Virginia"/>
+				<group locked="true" x="3218" y="51" width="1523" height="666" name="Population Sector">
+					<item uid="28"/>
+				</group>
+				<aux x="3534.75" y="185" width="110.5" height="46" name="Annual MWh\nper Person"/>
+				<aux x="3850.21" y="174" width="135.5" height="68" name="Annual Demand\nfor Electricity\nin Virginia"/>
+				<connector uid="29" angle="14.3814">
+					<from>Annual_MWh_per_Person</from>
+					<to>Annual_Demand_for_Electricity_in_Virginia</to>
+				</connector>
+				<connector uid="30" angle="358.779">
+					<from>Virginia_Population</from>
+					<to>Annual_Demand_for_Electricity_in_Virginia</to>
+				</connector>
+				<connector uid="31" angle="15.3099">
+					<from>
+						<alias uid="32"/>
+					</from>
+					<to>New_Dominion_Demand</to>
+				</connector>
+				<aux x="1152.89" y="191.333" width="205.5" height="46" name="Total Plants in Operation\nor Under Construction"/>
+				<connector uid="33" angle="62.9519">
+					<from>Total_SMRs_in_Operation</from>
+					<to>Total_Plants_in_Operation_or_Under_Construction</to>
+				</connector>
+				<connector uid="34" angle="99.0825">
+					<from>SMRs_Under_Construction</from>
+					<to>Total_Plants_in_Operation_or_Under_Construction</to>
+				</connector>
+				<connector uid="35" angle="181.275">
+					<from>Total_Plants_in_Operation_or_Under_Construction</from>
+					<to>Potential_MW_of_Generating_Capacity</to>
+				</connector>
+				<aux x="910.027" y="196.472" width="229.5" height="46" name="Potential MW of Generating\nCapacity"/>
+				<connector uid="41" angle="271.752">
+					<from>Hours_per_year</from>
+					<to>Demand_Filled_by_SMRS</to>
+				</connector>
+				<connector uid="42" angle="176.336">
+					<from>Potential_MW_of_Generating_Capacity</from>
+					<to>Demand_Filled_by_SMRS</to>
+				</connector>
+				<stacked_container uid="43" x="2537.12" y="33.6667" width="640.88" height="416">
+					<graph width="640.88" height="416" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="11" num_y_grid_lines="5" num_x_labels="11" num_y_labels="5" title="Historical vs Simulated Electricity Demand" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Annual_Demand_for_Electricity_in_Virginia"/>
+						</plot>
+						<plot color="red" pen_style="dot_dashed" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name="Total_Historical_Electricity_Demand"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux label_side="left" label_angle="225" x="1906.16" y="808.333" width="197.5" height="46" name="NRC Permit Processing\nTime Delay"/>
+				<stock label_side="center" x="2087.83" y="952.833" width="164" height="93" name="NRC Applications\nunder review"/>
+				<flow label_side="bottom" x="1962.33" y="999.333" name="New Licensing\nApplications\nsubmitted">
+					<pts>
+						<pt x="1836.83" y="999.333"/>
+						<pt x="2087.83" y="999.333"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="2085.33" y="712.305" width="141" height="88" name="Licenses\napproved"/>
+				<stock label_side="center" x="2082.33" y="1210.83" width="175" height="112" name="Licenses\nFailed/Withdrawn"/>
+				<flow label_side="bottom" x="2096.33" y="1122.33" name="Failed Applications">
+					<pts>
+						<pt x="2096.33" y="1045.83"/>
+						<pt x="2096.33" y="1210.83"/>
+					</pts>
+				</flow>
+				<flow x="2175.83" y="882.569" name="Approved Applications">
+					<pts>
+						<pt x="2175.83" y="952.833"/>
+						<pt x="2175.83" y="800.305"/>
+					</pts>
+				</flow>
+				<flow x="2239.83" y="1134.33" name="Resubmitted\nApplications">
+					<pts>
+						<pt x="2239.83" y="1210.83"/>
+						<pt x="2239.83" y="1045.83"/>
+					</pts>
+				</flow>
+				<aux x="1834.16" y="875" width="71.5" height="68" name="New\nReactor\nDesign"/>
+				<text_box font_size="16pt" appearance="transparent" uid="56" x="1815" y="143.667" width="581" height="137.5">Problem Statement: 
+
+The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&apos;s total electricity generation will originate from nuclear power following the clean energy transition. Presently, electricity demand is growing and there are no nuclear small modular reactors in operation in Virginia.</text_box>
+				<connector uid="67" angle="315.654">
+					<from>New_Reactor_Design</from>
+					<to>New_Licensing_Applications_submitted</to>
+				</connector>
+				<connector uid="68" angle="255.777">
+					<from>NRC_Permit_Processing_Time_Delay</from>
+					<to>New_Licensing_Applications_submitted</to>
+				</connector>
+				<aux x="2257.33" y="823.666" width="134.5" height="46" name="Fraction license\napproved"/>
+				<connector uid="74" angle="193.57">
+					<from>Fraction_license_approved</from>
+					<to>Approved_Applications</to>
+				</connector>
+				<connector uid="75" angle="54.6888">
+					<from>NRC_Applications_under_review</from>
+					<to>Approved_Applications</to>
+				</connector>
+				<connector uid="77" angle="207.408">
+					<from>NRC_Applications_under_review</from>
+					<to>Failed_Applications</to>
+				</connector>
+				<aux x="2282.16" y="1063.67" width="145.5" height="46" name="Fraction license\napps resubmitted"/>
+				<connector uid="78" angle="171.476">
+					<from>Fraction_license_apps_resubmitted</from>
+					<to>Resubmitted_Applications</to>
+				</connector>
+				<connector uid="79" angle="38.2811">
+					<from>&quot;Licenses_Failed/Withdrawn&quot;</from>
+					<to>Resubmitted_Applications</to>
+				</connector>
+				<connector uid="87" angle="313.936">
+					<from>NRC_Permit_Processing_Time_Delay</from>
+					<to>Failed_Applications</to>
+				</connector>
+				<connector uid="88" angle="343.313">
+					<from>NRC_Permit_Processing_Time_Delay</from>
+					<to>Approved_Applications</to>
+				</connector>
+				<connector uid="90" angle="307.787">
+					<from>NRC_Permit_Processing_Time_Delay</from>
+					<to>Resubmitted_Applications</to>
+				</connector>
+				<flow x="1526.74" y="392.167" name="New SMRs\nStarted">
+					<pts>
+						<pt x="1598.33" y="393.333"/>
+						<pt x="1598.33" y="392.167"/>
+						<pt x="1443.15" y="392.167"/>
+					</pts>
+				</flow>
+				<connector uid="21" angle="359.275">
+					<from>Construction_Underway</from>
+					<to>New_SMRs_Started</to>
+				</connector>
+				<connector uid="94" angle="230.376">
+					<from>Fraction_license_approved</from>
+					<to>Failed_Applications</to>
+				</connector>
+				<aux x="1723.08" y="1237" width="133.5" height="46" name="Switch\nfor nuclear start"/>
+				<aux x="1879.58" y="1254.83" width="180.5" height="24" name="Year for Nuclear Start"/>
+				<connector uid="95" angle="56.5052">
+					<from>Switch_for_nuclear_start</from>
+					<to>New_Licensing_Applications_submitted</to>
+				</connector>
+				<connector uid="96" angle="38.6598">
+					<from>Year_for_Nuclear_Start</from>
+					<to>New_Licensing_Applications_submitted</to>
+				</connector>
+				<aux x="2103.58" y="503" width="104.5" height="46" name="Projects per\nLicense"/>
+				<aux x="2085.58" y="600.889" width="140.5" height="46" name="Ratio of Projects\nper license"/>
+				<connector uid="97" angle="110.932">
+					<from>Licenses_approved</from>
+					<to>Ratio_of_Projects_per_license</to>
+				</connector>
+				<connector uid="98" angle="270">
+					<from>Projects_per_License</from>
+					<to>Ratio_of_Projects_per_license</to>
+				</connector>
+				<aux x="1921.08" y="507.667" width="133.5" height="68" name="effect of license\nratio on new\ndesigns"/>
+				<connector uid="99" angle="153.922">
+					<from>Ratio_of_Projects_per_license</from>
+					<to>effect_of_license_ratio_on_new_designs</to>
+				</connector>
+				<aux x="1435.5" y="841.667" width="150.5" height="46" name="Effect of Licenses\non Budgets"/>
+				<connector uid="101" angle="200.468">
+					<from>Ratio_of_Projects_per_license</from>
+					<to>Effect_of_Licenses_on_Budgets</to>
+				</connector>
+				<connector uid="102" angle="182.663">
+					<from>Effect_of_Licenses_on_Budgets</from>
+					<to>Additions_to_budget</to>
+				</connector>
+				<stacked_container uid="103" x="3.75633" y="475.333" width="614.267" height="416">
+					<graph width="614.267" height="416" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="11" num_y_grid_lines="5" num_x_labels="11" num_y_labels="5" title="Licenses Approved vs. SMR Budget" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" right_axis="true" show_y_axis="true">
+							<entity name="SMR_Budget"/>
+						</plot>
+						<plot color="red" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Licenses_approved"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="1121.41" y="1561.17" width="126.5" height="46" name="dollars per\nmegawatt hour"/>
+				<aux x="1091.91" y="1679.09" width="135.5" height="46" name="potential annual\nincome"/>
+				<connector uid="105" angle="268.294">
+					<from>dollars_per_megawatt_hour</from>
+					<to>potential_annual_income</to>
+				</connector>
+				<connector uid="106" angle="326.465">
+					<from>
+						<alias uid="104"/>
+					</from>
+					<to>potential_annual_income</to>
+				</connector>
+				<stock label_side="center" x="1295.5" y="1765" width="291.667" height="93.3333" name="Average annual\nincome of Dominion"/>
+				<flow x="1154.25" y="1807.5" name="Net change in\nannual average income">
+					<pts>
+						<pt x="1013" y="1807.5"/>
+						<pt x="1295.5" y="1807.5"/>
+					</pts>
+				</flow>
+				<connector uid="107" angle="261.469">
+					<from>potential_annual_income</from>
+					<to>Net_change_in_annual_average_income</to>
+				</connector>
+				<connector uid="108" angle="165.964">
+					<from>Average_annual_income_of_Dominion</from>
+					<to>Net_change_in_annual_average_income</to>
+				</connector>
+				<aux x="761.417" y="1797.92" width="220.5" height="46" name="adjustment time\nfor average annual income"/>
+				<connector uid="109" angle="33.6422">
+					<from>adjustment_time_for_average_annual_income</from>
+					<to>Net_change_in_annual_average_income</to>
+				</connector>
+				<aux x="1189.47" y="956" width="214.5" height="24" name="Dollars per Megawatthour"/>
+				<aux x="725.28" y="286.166" width="111.5" height="46" name="Revenue per\nyear"/>
+				<connector uid="110" angle="278.13">
+					<from>Demand_Filled_by_SMRS</from>
+					<to>Revenue_per_year</to>
+				</connector>
+				<aux x="772.747" y="1289.67" width="120.5" height="24" name="Cost per plant"/>
+				<aux x="909.717" y="1210.33" width="106.5" height="46" name="Current cost\nper plant"/>
+				<aux x="1004.31" y="1299.5" width="95.5" height="46" name="Inflationary\nTest"/>
+				<connector uid="113" angle="62.4492">
+					<from>Cost_per_plant</from>
+					<to>Current_cost_per_plant</to>
+				</connector>
+				<connector uid="114" angle="134.974">
+					<from>Inflationary_Test</from>
+					<to>Current_cost_per_plant</to>
+				</connector>
+				<aux x="849.83" y="1345.5" width="195.5" height="24" name="Total Construction Cost"/>
+				<connector uid="115" angle="262.936">
+					<from>Current_cost_per_plant</from>
+					<to>Total_Construction_Cost</to>
+				</connector>
+				<connector uid="116" angle="85.5634">
+					<from>
+						<alias uid="117"/>
+					</from>
+					<to>Total_Construction_Cost</to>
+				</connector>
+				<stock label_side="center" x="1440.2" y="1410.84" width="203.333" height="138.333" name="Cumulative\nRevenues"/>
+				<flow x="1352.44" y="1456.67" name="Additions\nto Cumulative\nRevenue">
+					<pts>
+						<pt x="1264.67" y="1456.67"/>
+						<pt x="1440.2" y="1456.67"/>
+					</pts>
+				</flow>
+				<aux x="1491" y="1324.67" width="119.5" height="24" name="Annual Profits"/>
+				<connector uid="119" angle="342.52">
+					<from>
+						<alias uid="118"/>
+					</from>
+					<to>Annual_Profits</to>
+				</connector>
+				<connector uid="120" angle="182.354">
+					<from>Annual_Profits</from>
+					<to>Additions_to_Cumulative_Revenue</to>
+				</connector>
+				<aux x="1497.66" y="1257.17" width="119.5" height="24" name="Profit Margins"/>
+				<connector uid="121" angle="264.367">
+					<from>Profit_Margins</from>
+					<to>Annual_Profits</to>
+				</connector>
+				<stacked_container uid="122" x="759.987" y="1937.5" width="881.02" height="452.173">
+					<graph width="881.02" height="452.173" type="time_series" show_grid="true" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="11" num_y_grid_lines="5" num_x_labels="11" num_y_labels="5" title="Breakeven Point of SMR Construction Cost" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Cumulative_Revenues"/>
+						</plot>
+						<plot color="red" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name="Total_Construction_Cost"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<group locked="true" x="3222.13" y="753.236" width="1509.17" height="651.667" name="NIMBY">
+					<item uid="142"/>
+					<item uid="179"/>
+				</group>
+				<stock label_side="center" x="3694.63" y="924.076" width="263.333" height="125" name="NIMBY\nPeople"/>
+				<flow x="3517.13" y="962.406" name="Additions to\nNIMBY people">
+					<pts>
+						<pt x="3339.63" y="962.406"/>
+						<pt x="3694.63" y="962.406"/>
+					</pts>
+				</flow>
+				<flow x="4050.73" y="987.5" name="Reductions in\nNIMBY People">
+					<pts>
+						<pt x="3957.96" y="987.5"/>
+						<pt x="4167.5" y="987.5"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="2739.16" y="785.408" width="208.333" height="121.667" name="Sites selected"/>
+				<flow x="2636.25" y="847.908" name="New sites\nselected">
+					<pts>
+						<pt x="2533.33" y="847.908"/>
+						<pt x="2739.16" y="847.908"/>
+					</pts>
+				</flow>
+				<aux x="2655.58" y="1003.91" width="135.5" height="46" name="Desired number\nof sites"/>
+				<aux x="2762.25" y="1100.58" width="224.5" height="68" name="ratio sites\nselected to desired number\nof sites"/>
+				<connector uid="123" angle="324.54">
+					<from>Desired_number_of_sites</from>
+					<to>ratio_sites_selected_to_desired_number_of_sites</to>
+				</connector>
+				<connector uid="124" angle="287.418">
+					<from>Sites_selected</from>
+					<to>ratio_sites_selected_to_desired_number_of_sites</to>
+				</connector>
+				<aux x="2737.58" y="1218.91" width="121.5" height="68" name="Effect of Ratio\non new sites\nselected"/>
+				<connector uid="125" angle="226.89">
+					<from>ratio_sites_selected_to_desired_number_of_sites</from>
+					<to>Effect_of_Ratio_on_new_sites_selected</to>
+				</connector>
+				<connector uid="126" angle="155.136">
+					<from>Effect_of_Ratio_on_new_sites_selected</from>
+					<to>New_sites_selected</to>
+				</connector>
+				<aux x="2541.92" y="509.575" width="149.5" height="24" name="Sites per reactors"/>
+				<aux x="2493.49" y="651.131" width="128.5" height="24" name="Sites proposed"/>
+				<connector uid="128" angle="247.398">
+					<from>Sites_per_reactors</from>
+					<to>Sites_proposed</to>
+				</connector>
+				<connector uid="129" angle="340.731">
+					<from>Sites_proposed</from>
+					<to>New_sites_selected</to>
+				</connector>
+				<aux x="2685.25" y="689.241" width="112.5" height="68" name="Adjustment\ntime for\nsite selection"/>
+				<connector uid="130" angle="229.826">
+					<from>Adjustment_time_for_site_selection</from>
+					<to>New_sites_selected</to>
+				</connector>
+				<stacked_container uid="131" x="1698.34" y="1375.83" width="1003.09" height="561.667">
+					<graph width="1003.09" height="561.667" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="SMR Sites vs Reactor Licenses" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="Sites_selected"/>
+						</plot>
+						<plot color="red" pen_style="dot_dashed" isee:keep_zero_visible="true" pen_width="3" index="1" show_y_axis="true">
+							<entity name="Licenses_approved"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="2947.66" y="1219.91" width="201.5" height="46" name="Effect of ratio of sites on\nNIMBY-ism"/>
+				<connector uid="132" angle="282.581">
+					<from>ratio_sites_selected_to_desired_number_of_sites</from>
+					<to>&quot;Effect_of_ratio_of_sites_on_NIMBY-ism&quot;</to>
+				</connector>
+				<connector uid="133" angle="38.5471">
+					<from>Licenses_approved</from>
+					<to>Sites_proposed</to>
+				</connector>
+				<aux x="3995.98" y="810.406" width="109.5" height="46" name="Community\nEngagement"/>
+				<connector uid="134" angle="270">
+					<from>Community_Engagement</from>
+					<to>Reductions_in_NIMBY_People</to>
+				</connector>
+				<connector uid="137" angle="42.7877">
+					<from>NIMBY_People</from>
+					<to>Reductions_in_NIMBY_People</to>
+				</connector>
+				<aux x="3287.21" y="781.906" width="121.5" height="46" name="NIMBYism per\nSite Selected"/>
+				<connector uid="143" angle="318.715">
+					<from>NIMBYism_per_Site_Selected</from>
+					<to>Additions_to_NIMBY_people</to>
+				</connector>
+				<connector uid="144" angle="193.536">
+					<from>
+						<alias uid="142"/>
+					</from>
+					<to>Additions_to_NIMBY_people</to>
+				</connector>
+				<aux x="3259.25" y="1053.17" width="175.5" height="46" name="Amount of NIMBYism\nto Cause Problems"/>
+				<aux x="3392.96" y="1119.17" width="192.5" height="46" name="Ratio of NIMBY People to Problem Level"/>
+				<connector uid="145" angle="235.935">
+					<from>NIMBY_People</from>
+					<to>Ratio_of_NIMBY_People_to_Problem_Level</to>
+				</connector>
+				<connector uid="146" angle="7.05432">
+					<from>Amount_of_NIMBYism_to_Cause_Problems</from>
+					<to>Ratio_of_NIMBY_People_to_Problem_Level</to>
+				</connector>
+				<aux x="3399.71" y="1231.08" width="190.5" height="46" name="Effect of the NIMBY\nRatio on Site Selection"/>
+				<connector uid="147" angle="302.351">
+					<from>Ratio_of_NIMBY_People_to_Problem_Level</from>
+					<to>Effect_of_the_NIMBY_Ratio_on_Site_Selection</to>
+				</connector>
+				<group locked="true" x="2433.33" y="482.411" width="778.333" height="886.663" name="Site Selection">
+					<item uid="159"/>
+					<item uid="148"/>
+				</group>
+				<flow x="3048.41" y="842.908" name="Sites Cancelled">
+					<pts>
+						<pt x="2947.49" y="842.908"/>
+						<pt x="3173.33" y="842.908"/>
+					</pts>
+				</flow>
+				<connector uid="150" angle="324.462">
+					<from>
+						<alias uid="148"/>
+					</from>
+					<to>Sites_Cancelled</to>
+				</connector>
+				<connector uid="151" angle="45.555">
+					<from>Sites_selected</from>
+					<to>Sites_Cancelled</to>
+				</connector>
+				<aux x="2775.92" y="618.464" width="190.5" height="46" name="Ratio of total\nplants to sites selected"/>
+				<connector uid="160" angle="323.081">
+					<from>
+						<alias uid="159"/>
+					</from>
+					<to>Ratio_of_total_plants_to_sites_selected</to>
+				</connector>
+				<connector uid="161" angle="69.5632">
+					<from>Sites_selected</from>
+					<to>Ratio_of_total_plants_to_sites_selected</to>
+				</connector>
+				<aux x="2610.08" y="608.908" width="186.5" height="24" name="Effect of the sites ratio"/>
+				<connector uid="162" angle="113.553">
+					<from>Ratio_of_total_plants_to_sites_selected</from>
+					<to>Effect_of_the_sites_ratio</to>
+				</connector>
+				<connector uid="163" angle="220.236">
+					<from>
+						<alias uid="164"/>
+					</from>
+					<to>Expenditures_to_budget</to>
+				</connector>
+				<aux x="325.195" y="280.166" width="169.5" height="46" name="Effect of demand\nratio on new permits"/>
+				<connector uid="165" angle="181.585">
+					<from>Ratio_of_Demand_to_Supply</from>
+					<to>Effect_of_demand_ratio_on_new_permits</to>
+				</connector>
+				<connector uid="166" angle="27.6071">
+					<from>
+						<alias uid="167"/>
+					</from>
+					<to>New_Licensing_Applications_submitted</to>
+				</connector>
+				<stock label_side="center" x="1471.77" y="1034.17" width="130" height="100" name="Average price of electricity"/>
+				<flow x="1360.05" y="1091.67" name="Net change in average price of electricity">
+					<pts>
+						<pt x="1236.33" y="1091.67"/>
+						<pt x="1471.77" y="1091.67"/>
+					</pts>
+				</flow>
+				<aux x="1275.13" y="1186.34" width="234.5" height="24" name="Time to adjust average price"/>
+				<connector uid="169" angle="64.1009">
+					<from>Time_to_adjust_average_price</from>
+					<to>Net_change_in_average_price_of_electricity</to>
+				</connector>
+				<connector uid="171" angle="119.403">
+					<from>Average_price_of_electricity</from>
+					<to>Net_change_in_average_price_of_electricity</to>
+				</connector>
+				<connector uid="173" angle="72.9938">
+					<from>
+						<alias uid="174"/>
+					</from>
+					<to>Revenue_per_year</to>
+				</connector>
+				<aux x="1130.48" y="1007" width="153.5" height="46" name="Current Dollars per Megawatthour"/>
+				<connector uid="175" angle="195.541">
+					<from>Dollars_per_Megawatthour</from>
+					<to>Current_Dollars_per_Megawatthour</to>
+				</connector>
+				<connector uid="176" angle="348.111">
+					<from>Current_Dollars_per_Megawatthour</from>
+					<to>Net_change_in_average_price_of_electricity</to>
+				</connector>
+				<aux x="884.217" y="1021.67" width="177.5" height="24" name="Fraction Gov subsidy"/>
+				<connector uid="177" angle="0.896727">
+					<from>Fraction_Gov_subsidy</from>
+					<to>Current_Dollars_per_Megawatthour</to>
+				</connector>
+				<aux x="881.08" y="1105.33" width="200.5" height="24" name="Year Gov Subsidy starts"/>
+				<connector uid="178" angle="4.67742">
+					<from>Year_Gov_Subsidy_starts</from>
+					<to>Current_Dollars_per_Megawatthour</to>
+				</connector>
+				<group locked="true" x="1670.66" y="483.889" width="761.667" height="885" name="NRC Licenses">
+					<item uid="167"/>
+				</group>
+				<stacked_container uid="179" x="4152.5" y="1009.58" width="550" height="387.5">
+					<graph width="550" height="387.5" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
+							<entity name="NIMBY_People"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="2353.97" y="41.222" width="157.5" height="46" name="Total Historical\nElectricity Demand"/>
+				<group locked="true" x="-17.5" y="57.5" width="887.5" height="839.167" name="Demand">
+					<item uid="174"/>
+					<item uid="32"/>
+					<item uid="103"/>
+				</group>
+				<group locked="true" x="878.83" y="111.055" width="737.5" height="537.5" name="Supply"/>
+				<group locked="true" x="883.583" y="680" width="726.667" height="216.667" name="Budget">
+					<item uid="164"/>
+				</group>
+				<group locked="true" x="731.33" y="920" width="938.333" height="1493.33" name="Revenue and Subsidies">
+					<item uid="117"/>
+					<item uid="118"/>
+					<item uid="104"/>
+					<item uid="122"/>
+				</group>
+				<alias font_style="italic" uid="32" x="345.25" y="174.833" width="138.5" height="68">
+					<shape type="name_only"/>
+					<of>Annual_Demand_for_Electricity_in_Virginia</of>
+				</alias>
+				<alias color="#AA00FF" font_style="italic" font_color="#AA00FF" uid="104" x="953.83" y="1584.92" width="127.5" height="46">
+					<of>Demand_Filled_by_SMRS</of>
+				</alias>
+				<alias color="#AA00FF" font_style="italic" font_color="#AA00FF" label_side="center" uid="117" x="873.807" y="1450.67" width="130" height="100">
+					<of>Total_SMRs_in_Operation</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="118" x="1354.75" y="1269.51" width="111.5" height="46">
+					<shape type="name_only"/>
+					<of>Revenue_per_year</of>
+				</alias>
+				<alias font_style="italic" uid="142" x="3585.46" y="778.156" width="87.5" height="46">
+					<of>New_sites_selected</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="148" x="2989.42" y="593.241" width="194.5" height="46">
+					<shape type="name_only"/>
+					<of>Effect_of_the_NIMBY_Ratio_on_Site_Selection</of>
+				</alias>
+				<alias font_style="italic" uid="159" x="2747.42" y="516.908" width="208.5" height="46">
+					<of>Total_Plants_in_Operation_or_Under_Construction</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="164" x="1282.25" y="688.333" width="188.5" height="24">
+					<shape type="name_only"/>
+					<of>Effect_of_the_sites_ratio</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" uid="167" x="1683.58" y="1077" width="172.5" height="46">
+					<shape type="name_only"/>
+					<of>Effect_of_demand_ratio_on_new_permits</of>
+				</alias>
+				<alias color="blue" background="white" font_style="italic" label_side="center" uid="174" x="674.213" y="395.889" width="130" height="100">
+					<shape type="rectangle" width="45" height="35"/>
+					<of>Average_price_of_electricity</of>
+				</alias>
+			</view>
+		</views>
+	</model>
+	<isee:controls>
+		<isee:control priority="interactive" name="Amount_of_NIMBYism_to_Cause_Problems" value="10746.8172719269"/>
+		<isee:control priority="interactive" name="Community_Engagement" value="1.93587016819106"/>
+		<isee:control priority="interactive" name="Dollars_per_Megawatthour" value="113.763555601639"/>
+		<isee:control priority="interactive" name="Fraction_Gov_subsidy" value="0.5"/>
+		<isee:control priority="interactive" name="Switch_for_nuclear_start" value="1"/>
+		<isee:control priority="interactive" name="Time_to_complete_Construction" value="6.12050328493145"/>
+	</isee:controls>
+</xmile>
+
