@@ -196,15 +196,15 @@
 				<units>People</units>
 			</aux>
 			<group name="Population Sector" run="false">
-				<entity name="Annual_Demand_for_Electricity_in_Virginia"/>
-				<entity name='"Virginia_Carrying_Capacity\""'/>
-				<entity name="Virginia_Population"/>
-				<entity name='"\"Ratio:_Population_to_Carrying_Capacity\""'/>
-				<entity name="Annual_MWh_per_Person"/>
-				<entity name="Historical_and_Project_Population_of_Virginia"/>
-				<entity name="Adequacy_of_ecosystem_to_support_more_growth"/>
-				<entity name='"Net_Change_in_U.S._Population"'/>
 				<entity name="Population_Net_Growth_Fraction"/>
+				<entity name="Historical_and_Project_Population_of_Virginia"/>
+				<entity name="Annual_MWh_per_Person"/>
+				<entity name="Virginia_Population"/>
+				<entity name="Adequacy_of_ecosystem_to_support_more_growth"/>
+				<entity name='"Virginia_Carrying_Capacity\""'/>
+				<entity name='"Net_Change_in_U.S._Population"'/>
+				<entity name='"\"Ratio:_Population_to_Carrying_Capacity\""'/>
+				<entity name="Annual_Demand_for_Electricity_in_Virginia"/>
 			</group>
 			<aux name="Annual MWh\nper Person">
 				<eqn>9.1</eqn>
@@ -388,19 +388,19 @@ cost per MWh is 124 $/MWh</doc>
 				<units>Dimensionless</units>
 			</aux>
 			<group name="NIMBY" run="false">
-				<entity name="NIMBYism_per_Site_Selected"/>
-				<entity name="Ratio_of_NIMBY_people_to_Permanent_Jobs"/>
-				<entity name="Ratio_of_NIMBY_People_to_Problem_Level"/>
-				<entity name="Effect_of_NIMBY_ratio_on_reduction_of_NIMBYISM"/>
-				<entity name="Total_Permanent_Jobs"/>
-				<entity name="Community_Engagement"/>
-				<entity name="Amount_of_NIMBYism_to_Cause_Problems"/>
-				<entity name="Reduction_of_NIMBY_From_Education"/>
-				<entity name="Reductions_in_NIMBY_People"/>
-				<entity name="Additions_to_NIMBY_people"/>
-				<entity name="Permanent_Jobs_Per_Nuclear_Power_Plant"/>
-				<entity name="Effect_of_the_NIMBY_Ratio_on_Site_Selection"/>
 				<entity name="NIMBY_People"/>
+				<entity name="Permanent_Jobs_Per_Nuclear_Power_Plant"/>
+				<entity name="Additions_to_NIMBY_people"/>
+				<entity name="Effect_of_the_NIMBY_Ratio_on_Site_Selection"/>
+				<entity name="Reductions_in_NIMBY_People"/>
+				<entity name="Reduction_of_NIMBY_From_Education"/>
+				<entity name="Amount_of_NIMBYism_to_Cause_Problems"/>
+				<entity name="Community_Engagement"/>
+				<entity name="Total_Permanent_Jobs"/>
+				<entity name="Effect_of_NIMBY_ratio_on_reduction_of_NIMBYISM"/>
+				<entity name="Ratio_of_NIMBY_People_to_Problem_Level"/>
+				<entity name="Ratio_of_NIMBY_people_to_Permanent_Jobs"/>
+				<entity name="NIMBYism_per_Site_Selected"/>
 			</group>
 			<stock name="NIMBY\nPeople">
 				<eqn>0</eqn>
@@ -494,18 +494,18 @@ cost per MWh is 124 $/MWh</doc>
 				<units>Dimensionless/Year</units>
 			</aux>
 			<group name="Site Selection" run="false">
-				<entity name="Effect_of_Ratio_on_new_sites_selected"/>
-				<entity name="Adjustment_time_for_site_selection"/>
-				<entity name="ratio_sites_selected_to_desired_number_of_sites"/>
-				<entity name="Sites_Cancelled"/>
-				<entity name="Sites_per_reactors"/>
+				<entity name="Ratio_of_total_plants_to_sites_selected"/>
+				<entity name="Sites_selected"/>
+				<entity name="Sites_proposed"/>
 				<entity name="Effect_of_the_sites_ratio"/>
 				<entity name='"Effect_of_ratio_of_sites_on_NIMBY-ism"'/>
-				<entity name="Sites_proposed"/>
+				<entity name="Sites_per_reactors"/>
 				<entity name="New_sites_selected"/>
-				<entity name="Sites_selected"/>
-				<entity name="Ratio_of_total_plants_to_sites_selected"/>
+				<entity name="Sites_Cancelled"/>
+				<entity name="ratio_sites_selected_to_desired_number_of_sites"/>
 				<entity name="Desired_number_of_sites"/>
+				<entity name="Adjustment_time_for_site_selection"/>
+				<entity name="Effect_of_Ratio_on_new_sites_selected"/>
 			</group>
 			<flow name="Sites Cancelled">
 				<eqn>Effect_of_the_NIMBY_Ratio_on_Site_Selection*Sites_selected</eqn>
@@ -552,7 +552,7 @@ cost per MWh is 124 $/MWh</doc>
 				<eqn>Dollars_per_Megawatthour*(1+STEP(Fraction_of_Government_Subsidy, Year_Gov_Subsidy_starts))</eqn>
 				<units>Dollars/(mW*h)</units>
 			</aux>
-			<aux name="Fraction of Government Subsidy">
+			<aux name="Fraction of\nGovernment Subsidy">
 				<eqn>0</eqn>
 				<range min="-0.5" max="0.5"/>
 				<units>Dimensionless</units>
@@ -564,23 +564,23 @@ cost per MWh is 124 $/MWh</doc>
 				<units>Years</units>
 			</aux>
 			<group name="NRC Licenses" run="false">
-				<entity name="Resubmitted_Applications"/>
-				<entity name="effect_of_license_ratio_on_new_designs"/>
-				<entity name="NRC_Permit_Processing_Time_Delay"/>
-				<entity name="NRC_Applications_under_review"/>
+				<entity name="Ratio_of_Projects_per_license"/>
+				<entity name="New_Licensing_Applications_submitted"/>
+				<entity name="Failed_Applications"/>
+				<entity name="Approved_Applications"/>
+				<entity name="Fraction_license_approved"/>
+				<entity name="Fraction_license_apps_resubmitted"/>
+				<entity name="Switch_for_nuclear_start"/>
+				<entity name="Licenses_approved"/>
 				<entity name="New_Reactor_Design"/>
 				<entity name="Year_for_Nuclear_Start"/>
-				<entity name='"Licenses_Failed/Withdrawn"'/>
-				<entity name="Fraction_license_apps_resubmitted"/>
 				<entity name="New_SMRs_Started"/>
-				<entity name="Switch_for_nuclear_start"/>
-				<entity name="Approved_Applications"/>
-				<entity name="New_Licensing_Applications_submitted"/>
-				<entity name="Fraction_license_approved"/>
+				<entity name="NRC_Permit_Processing_Time_Delay"/>
+				<entity name="effect_of_license_ratio_on_new_designs"/>
+				<entity name='"Licenses_Failed/Withdrawn"'/>
 				<entity name="Projects_per_License"/>
-				<entity name="Ratio_of_Projects_per_license"/>
-				<entity name="Failed_Applications"/>
-				<entity name="Licenses_approved"/>
+				<entity name="Resubmitted_Applications"/>
+				<entity name="NRC_Applications_under_review"/>
 			</group>
 			<aux name="Total Historical\nElectricity Demand">
 				<eqn>TIME</eqn>
@@ -592,57 +592,57 @@ cost per MWh is 124 $/MWh</doc>
 				<units>Megawatts*hours</units>
 			</aux>
 			<group name="Demand" run="false">
-				<entity name="Effect_of_demand_ratio_on_new_permits"/>
-				<entity name="Year_SMRs_Start"/>
-				<entity name="Effect_of_demand_ratio_of_money_allocated"/>
-				<entity name="Normal_Funding_For_SMRs"/>
-				<entity name="Current_funding_for_SMRs"/>
-				<entity name="Fraction_demand_by_Nuclear"/>
-				<entity name="New_Dominion_Demand"/>
-				<entity name="Ratio_of_Demand_to_Supply"/>
-				<entity name="Revenue_per_year"/>
-				<entity name="Demand_Filled_by_SMRS"/>
 				<entity name="Hours_per_year"/>
+				<entity name="Demand_Filled_by_SMRS"/>
+				<entity name="Revenue_per_year"/>
+				<entity name="Ratio_of_Demand_to_Supply"/>
+				<entity name="New_Dominion_Demand"/>
+				<entity name="Fraction_demand_by_Nuclear"/>
+				<entity name="Current_funding_for_SMRs"/>
+				<entity name="Normal_Funding_For_SMRs"/>
+				<entity name="Effect_of_demand_ratio_of_money_allocated"/>
+				<entity name="Year_SMRs_Start"/>
+				<entity name="Effect_of_demand_ratio_on_new_permits"/>
 			</group>
 			<group name="Supply" run="false">
-				<entity name="Construction_Underway"/>
-				<entity name="Potential_MW_of_Generating_Capacity"/>
-				<entity name="New_SMRs_Started"/>
-				<entity name="New_Reactors_Built"/>
-				<entity name="Time_to_Complete_Construction"/>
-				<entity name="Total_SMRs_in_Operation"/>
-				<entity name="Total_Plants_in_Operation_or_Under_Construction"/>
-				<entity name="SMRs_Under_Construction"/>
 				<entity name="MW_per_reactor"/>
+				<entity name="Total_Plants_in_Operation_or_Under_Construction"/>
+				<entity name="Total_SMRs_in_Operation"/>
+				<entity name="New_Reactors_Built"/>
+				<entity name="SMRs_Under_Construction"/>
+				<entity name="New_SMRs_Started"/>
+				<entity name="Potential_MW_of_Generating_Capacity"/>
+				<entity name="Time_to_Complete_Construction"/>
+				<entity name="Construction_Underway"/>
 			</group>
 			<group name="Budget" run="false">
-				<entity name="Effect_of_Licenses_on_Budgets"/>
-				<entity name="Expenditures_to_budget"/>
-				<entity name="Additions_to_budget"/>
-				<entity name="Time_to_Spend_Money"/>
 				<entity name="SMR_Budget"/>
+				<entity name="Time_to_Spend_Money"/>
+				<entity name="Additions_to_budget"/>
+				<entity name="Expenditures_to_budget"/>
+				<entity name="Effect_of_Licenses_on_Budgets"/>
 			</group>
 			<group name="Revenue and Subsidies" run="false">
-				<entity name="Net_change_in_average_price_of_electricity"/>
-				<entity name="Current_Dollars_per_Megawatthour"/>
-				<entity name="adjustment_time_for_average_annual_income"/>
-				<entity name="dollars_per_megawatt_hour"/>
+				<entity name="Year_Gov_Subsidy_starts"/>
+				<entity name="Annual_Profits"/>
+				<entity name="Average_annual_income_of_Dominion"/>
+				<entity name="Additions_to_Cumulative_Revenue"/>
+				<entity name="Inflationary_Test"/>
+				<entity name="Dollars_per_Megawatthour"/>
+				<entity name="Current_cost_per_plant"/>
+				<entity name="Time_to_adjust_average_price"/>
+				<entity name="potential_annual_income"/>
+				<entity name="Cost_per_plant"/>
+				<entity name="Net_change_in_annual_average_income"/>
 				<entity name="Average_price_of_electricity"/>
 				<entity name="Total_Construction_Cost"/>
-				<entity name="Cost_per_plant"/>
-				<entity name="Fraction_of_Government_Subsidy"/>
-				<entity name="Net_change_in_annual_average_income"/>
-				<entity name="potential_annual_income"/>
-				<entity name="Dollars_per_Megawatthour"/>
-				<entity name="Inflationary_Test"/>
-				<entity name="Current_cost_per_plant"/>
 				<entity name="Profit_Margins"/>
+				<entity name="dollars_per_megawatt_hour"/>
 				<entity name="Cumulative_Revenues"/>
-				<entity name="Time_to_adjust_average_price"/>
-				<entity name="Additions_to_Cumulative_Revenue"/>
-				<entity name="Average_annual_income_of_Dominion"/>
-				<entity name="Annual_Profits"/>
-				<entity name="Year_Gov_Subsidy_starts"/>
+				<entity name="Current_Dollars_per_Megawatthour"/>
+				<entity name="Fraction_of_Government_Subsidy"/>
+				<entity name="adjustment_time_for_average_annual_income"/>
+				<entity name="Net_change_in_average_price_of_electricity"/>
 			</group>
 			<group name="Sector 1" run="false"/>
 			<group name="Sector 2" run="false"/>
@@ -720,7 +720,7 @@ cost per MWh is 124 $/MWh</doc>
 				<isee:iframe color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt" border_width="thin" border_style="solid"/>
 				<isee:financial_table color="black" background="#E0E0E0" text_align="right" font_size="12pt" hide_border="false" auto_fit="true" first_column_width="250" other_column_width="100" header_font_style="normal" header_font_weight="bold" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="14pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 			</style>
-			<view isee:show_pages="false" background="white" isee:converter_size="name_only" page_width="1034" page_height="794" isee:page_cols="10" isee:page_rows="5" isee:scroll_x="4720" zoom="60" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
+			<view isee:show_pages="false" background="white" isee:converter_size="name_only" page_width="1034" page_height="794" isee:page_cols="10" isee:page_rows="5" zoom="60" isee:popup_graphs_are_comparative="true" isee:enable_non_negative_highlights="false" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="18pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -1178,9 +1178,9 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 					</graph>
 				</stacked_container>
 				<group locked="true" x="3222.13" y="753.236" width="1509.17" height="651.667" name="NIMBY">
-					<item uid="179"/>
-					<item uid="142"/>
 					<item uid="185"/>
+					<item uid="142"/>
+					<item uid="179"/>
 				</group>
 				<stock label_side="center" x="3683.38" y="925" width="263.333" height="125" name="NIMBY\nPeople"/>
 				<flow x="3511.51" y="962.406" name="Additions to\nNIMBY people">
@@ -1287,8 +1287,8 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 					<to>Effect_of_the_NIMBY_Ratio_on_Site_Selection</to>
 				</connector>
 				<group locked="true" x="2433.33" y="482.411" width="778.333" height="886.663" name="Site Selection">
-					<item uid="148"/>
 					<item uid="159"/>
+					<item uid="148"/>
 				</group>
 				<flow x="3048.41" y="842.908" name="Sites Cancelled">
 					<pts>
@@ -1370,7 +1370,7 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 					<from>Current_Dollars_per_Megawatthour</from>
 					<to>Net_change_in_average_price_of_electricity</to>
 				</connector>
-				<aux x="840.217" y="1021.67" width="265.5" height="24" name="Fraction of Government Subsidy"/>
+				<aux x="885.217" y="1010.67" width="175.5" height="46" name="Fraction of\nGovernment Subsidy"/>
 				<connector uid="177" angle="0.897531">
 					<from>Fraction_of_Government_Subsidy</from>
 					<to>Current_Dollars_per_Megawatthour</to>
@@ -1392,19 +1392,19 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 				</stacked_container>
 				<aux x="2353.97" y="41.222" width="157.5" height="46" name="Total Historical\nElectricity Demand"/>
 				<group locked="true" x="-17.5" y="57.5" width="887.5" height="839.167" name="Demand">
-					<item uid="103"/>
-					<item uid="174"/>
 					<item uid="32"/>
+					<item uid="174"/>
+					<item uid="103"/>
 				</group>
 				<group locked="true" x="878.83" y="111.055" width="737.5" height="537.5" name="Supply"/>
 				<group locked="true" x="883.583" y="680" width="726.667" height="216.667" name="Budget">
 					<item uid="164"/>
 				</group>
 				<group locked="true" x="731.33" y="920" width="938.333" height="1493.33" name="Revenue and Subsidies">
-					<item uid="122"/>
+					<item uid="117"/>
 					<item uid="104"/>
 					<item uid="118"/>
-					<item uid="117"/>
+					<item uid="122"/>
 				</group>
 				<group locked="false" x="2917.5" y="1677.5" width="1880" height="937.5" name="Sector 1"/>
 				<stacked_container uid="180" x="3235.96" y="1882.5" width="1540" height="737.5">
@@ -1416,26 +1416,33 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 					<item uid="181"/>
 					<item uid="197"/>
 					<item uid="195"/>
+					<item uid="194"/>
 					<item uid="203"/>
 					<item uid="184"/>
-					<item uid="194"/>
 					<item uid="183"/>
-					<item uid="202"/>
-					<item uid="201"/>
 					<item uid="200"/>
+					<item uid="201"/>
+					<item uid="202"/>
 					<item uid="182"/>
 					<item uid="196"/>
 					<item uid="204"/>
 					<item uid="205"/>
-					<item uid="199"/>
+					<item uid="209"/>
+					<item uid="210"/>
+					<item uid="213"/>
+					<item uid="214"/>
+					<item uid="216"/>
+					<item uid="211"/>
+					<item uid="212"/>
+					<item uid="215"/>
 				</group>
-				<stacked_container uid="181" x="4933.96" y="173.242" width="1314.17" height="943.004" visible_index="8">
-					<graph font_size="36pt" width="1314.17" height="943.004" comparative="true" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+				<stacked_container uid="181" x="4933.96" y="173.242" width="1387.5" height="948.004" visible_index="6">
+					<graph font_size="36pt" width="1387.5" height="948.004" comparative="true" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Total_SMRs_in_Operation"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Break Even Point " isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Break Even Point " isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Cumulative_Revenues"/>
 						</plot>
@@ -1443,12 +1450,12 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 							<entity name="Total_Construction_Cost"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" comparative="true" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" comparative="true" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Current_Dollars_per_Megawatthour"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="SMR Site Locations" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="SMR Site Locations" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Sites_proposed"/>
 						</plot>
@@ -1456,12 +1463,12 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 							<entity name="Sites_selected"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" comparative="true" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" comparative="true" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="NIMBY_People"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Nimby vs Sites Selected " isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_title="NIMBY People " left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_title="Sites Selected" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Nimby vs Sites Selected " isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_title="NIMBY People " left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_title="Sites Selected" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="NIMBY_People"/>
 						</plot>
@@ -1469,7 +1476,7 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 							<entity name="Sites_selected"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Reactor Licenses and Total SMR" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Reactor Licenses and Total SMR" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Licenses_approved"/>
 						</plot>
@@ -1477,7 +1484,7 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 							<entity name="Total_SMRs_in_Operation"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" isee:transparent="false" width="1314.17" height="943.004" type="pie" show_grid="false" isee:tick_type="none" include_units_in_legend="true" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Demand Filled By SMR" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" isee:transparent="false" width="1387.5" height="948.004" type="pie" show_grid="false" isee:tick_type="none" include_units_in_legend="true" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Demand Filled By SMR" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="red" pen_style="dot_dashed" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Annual_Demand_for_Electricity_in_Virginia"/>
 						</plot>
@@ -1485,7 +1492,7 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 							<entity name="Demand_Filled_by_SMRS"/>
 						</plot>
 					</graph>
-					<graph font_size="36pt" width="1314.17" height="943.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Ratio of Nuclear SMR Demand to Supply" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
+					<graph font_size="36pt" width="1387.5" height="948.004" type="time_series" show_grid="false" isee:tick_type="none" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Ratio of Nuclear SMR Demand to Supply" isee:fill_intensity="0.1" isee:allow_zero_axis="true" left_axis_multi_scale="false" left_axis_auto_scale="true" left_include_units="true" right_axis_multi_scale="false" right_axis_auto_scale="true" right_include_units="true">
 						<plot color="blue" isee:keep_zero_visible="true" pen_width="3" index="0" show_y_axis="true">
 							<entity name="Ratio_of_Demand_to_Supply"/>
 						</plot>
@@ -1535,14 +1542,6 @@ The 2022 Virginia Energy Plan sets forth an expectation that 28% of the state&ap
 					<from>NIMBY_People</from>
 					<to>Reduction_of_NIMBY_From_Education</to>
 				</connector>
-				<stacked_container uid="199" x="5058.33" y="1198.33" width="695" height="298.333">
-					<table font_size="48pt" interval="1" report_balances="ending" report_flows="summed" header_font_size="48pt" width="695" height="298.333">
-						<item type="time"/>
-						<item>
-							<entity name="Total_SMRs_in_Operation"/>
-						</item>
-					</table>
-				</stacked_container>
 				<text_box uid="200" x="6851.67" y="379.753" width="260" height="58">Community Engagement effects NIMBY and Sites Selected</text_box>
 				<text_box uid="201" x="6850" y="511.667" width="263.333" height="75.0007">Decreasing Time to Spend Money decreases NIMBY
 Decrease in Time to Spend Money decreases time delay for electricity supply</text_box>
@@ -1558,6 +1557,30 @@ Slight impact on number of SMR</text_box>
 Low effect on NIMBY unless funding is very low so that there are no SMRs</text_box>
 				<text_box uid="205" x="6871.67" y="855.167" width="260" height="58">Sooner breakeven
 Increases value of MWh</text_box>
+				<numeric_display font_size="32pt" uid="209" x="4935.01" y="1146.33" width="590" height="64" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Total_SMRs_in_Operation"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="210" x="4935" y="1228" width="590.02" height="62.3333" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Ratio_of_Demand_to_Supply"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="212" x="5540" y="1304.67" width="431.667" height="59" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="NIMBY_People"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="211" x="5538.33" y="1146.33" width="435" height="64" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Sites_selected"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="213" x="4935" y="1304.67" width="590.02" height="55.6667" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Cumulative_Revenues"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="214" x="4940" y="1378" width="580.02" height="62.3333" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Total_Construction_Cost"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="215" x="5540" y="1228" width="431.667" height="62.3333" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Sites_proposed"/>
+				</numeric_display>
+				<numeric_display font_size="32pt" uid="216" x="5538.33" y="1379.67" width="435" height="59" retain_ending_value="true" isee:navigate_to="false" show_name="true">
+					<entity name="Licenses_approved"/>
+				</numeric_display>
 				<alias font_style="italic" uid="32" x="345.25" y="174.833" width="138.5" height="68">
 					<shape type="name_only"/>
 					<of>Annual_Demand_for_Electricity_in_Virginia</of>
@@ -1594,25 +1617,25 @@ Increases value of MWh</text_box>
 					<shape type="rectangle" width="45" height="35"/>
 					<of>Average_price_of_electricity</of>
 				</alias>
-				<alias font_style="italic" font_size="28pt" uid="182" x="6291.08" y="866.667" width="417" height="35">
+				<alias font_style="italic" font_size="32pt" uid="182" x="6421.5" y="818.5" width="312" height="78">
 					<of>Fraction_of_Government_Subsidy</of>
 				</alias>
-				<alias font_style="italic" font_size="28pt" uid="183" x="6327.83" y="661.414" width="306" height="68">
+				<alias font_style="italic" font_size="32pt" uid="183" x="6402.5" y="660.236" width="350" height="78">
 					<of>NRC_Permit_Processing_Time_Delay</of>
 				</alias>
-				<alias font_style="italic" font_size="28pt" uid="184" x="6383.49" y="523.5" width="188" height="68">
+				<alias font_style="italic" font_size="32pt" uid="184" x="6472.5" y="506.833" width="210" height="78">
 					<of>Time_to_Spend_Money</of>
 				</alias>
 				<alias color="#AA00FF" font_style="italic" font_color="#AA00FF" label_side="center" uid="185" x="4245" y="789.656" width="130" height="100">
 					<of>Total_SMRs_in_Operation</of>
 				</alias>
-				<alias font_style="italic" font_size="28pt" uid="194" x="6395.83" y="381.753" width="170" height="68">
+				<alias font_style="italic" font_size="32pt" uid="194" x="6480" y="341.753" width="195" height="78">
 					<of>Community_Engagement</of>
 				</alias>
-				<alias color="blue" font_style="italic" font_size="28pt" uid="195" x="6376.49" y="249.42" width="232" height="68">
+				<alias color="blue" font_style="italic" font_size="32pt" uid="195" x="6441.66" y="191.087" width="265" height="78">
 					<of>Time_to_Complete_Construction</of>
 				</alias>
-				<alias font_style="italic" font_size="28pt" uid="196" x="6379.16" y="987.917" width="210" height="68">
+				<alias font_style="italic" font_size="32pt" uid="196" x="6463.66" y="982.917" width="241" height="78">
 					<of>Normal_Funding_For_SMRs</of>
 				</alias>
 				<alias font_style="italic" uid="197" x="6097.76" y="113.909" width="134.5" height="46">
@@ -1645,7 +1668,8 @@ Lorem ipsum dolor sit amet</text_box>
 		</views>
 	</model>
 	<isee:controls>
-		<isee:control priority="interactive" name="Fraction_of_Government_Subsidy" value="-0.370370899651242"/>
+		<isee:control priority="interactive" name="Fraction_of_Government_Subsidy" value="0.5"/>
+		<isee:control priority="interactive" name="Normal_Funding_For_SMRs" value="1107870607.88344"/>
 		<isee:control priority="interactive" name="Switch_for_nuclear_start" value="1"/>
 	</isee:controls>
 </xmile>
